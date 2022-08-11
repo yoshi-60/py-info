@@ -6,6 +6,7 @@ updated at 2022/8/10
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
+
 | 3.10 | 3.10.6 |  Aug. 2, 2022 | link:https://www.python.org/downloads/release/python-3106/[Download] | 2026-10
 | 3.9 | 3.9.13 |  May 17, 2022 | link:https://www.python.org/downloads/release/python-3913/[Download] | 2025-10
 | 3.8 | 3.8.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3813/[Download] | 2024-10
