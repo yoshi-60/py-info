@@ -16,4 +16,5 @@ updated at 2022/8/10
 
 ## How to
 
+* [ローカルにPythonをインストールする](./Python3/Local_Install.md)
 * [Python3 で使う SQLite のバージョンを変更する](./SQLite/sqlite3_1.md)
