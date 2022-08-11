@@ -1,4 +1,5 @@
 = Python Information
+
 Memorandum for myself
 
 == Python latest version
