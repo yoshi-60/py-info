@@ -18,3 +18,10 @@ updated at 2022/8/10
 
 * [ローカルにPythonをインストールする](./Python3/Local_Install.md)
 * [Python3 で使う SQLite のバージョンを変更する](./SQLite/sqlite3_1.md)
+
+## References
+
+* [Python ドキュメント (docs.python.org) ](https://www.python.org/downloads/)
+* [Python Downloads (www.python.org) ](https://docs.python.org/ja/3/)
+* [Python Package Index (pypi.org) ](https://pypi.org/)
+* 
