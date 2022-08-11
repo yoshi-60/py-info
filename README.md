@@ -21,7 +21,7 @@ updated at 2022/8/10
 
 ## References
 
-* [Python ドキュメント (docs.python.org) ](https://www.python.org/downloads/)
-* [Python Downloads (www.python.org) ](https://docs.python.org/ja/3/)
+* [Python ドキュメント (docs.python.org) ](https://docs.python.org/ja/3/)
+* [Python Downloads (www.python.org) ](https://www.python.org/downloads)
 * [Python Package Index (pypi.org) ](https://pypi.org/)
-* 
+
