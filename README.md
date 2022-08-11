@@ -1,8 +1,9 @@
 # Python Information
 Memorandum for myself
 
-## Python latest version (@ 2022/8/10)
+## Python latest version
 
+updated at 2022/8/10
 |Python version|Release version|Release Date|Download|End of Support|
 | :--: | :--: | :--: | :--: | :--: |
 | 3.10 | 3.10.6 |  Aug. 2, 2022 | [Download](https://www.python.org/downloads/release/python-3106/) | 2026-10 |
