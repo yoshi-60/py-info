@@ -13,3 +13,7 @@ updated at 2022/8/10
 | 3.6 | 3.6.15 |  Sept. 4, 2021 | [Download](https://www.python.org/downloads/release/python-3615/) | 2021-12-23 |
 | 3.5 | 3.5.10 |  Sept. 5, 2020 | [Download](https://www.python.org/downloads/release/python-3510/) | 2020-09-13 |
 | 2.7 | 2.7.18 |  April 20, 2020 | [Download](https://www.python.org/downloads/release/python-2718/) | 2020-01-01 |
+
+## How to
+
+* [Python3 で使う SQLite のバージョンを変更する](./SQLite/sqlite3_1.md)
