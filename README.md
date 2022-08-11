@@ -18,10 +18,10 @@ updated at 2022/8/10
 
 * [ローカルにPythonをインストールする](./Python3/Local_Install.md)
 * [Python3 で使う SQLite のバージョンを変更する](./SQLite/sqlite3_1.md)
+* [pip でのインストールをローカルにダウンロードしたファイルで行う](./Python3/Pip_Local.md)
 
 ## References
 
 * [Python ドキュメント (docs.python.org) ](https://docs.python.org/ja/3/)
 * [Python Downloads (www.python.org) ](https://www.python.org/downloads)
 * [Python Package Index (pypi.org) ](https://pypi.org/)
-
