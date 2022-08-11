@@ -1,0 +1,28 @@
+= Python Information
+Memorandum for myself
+
+== Python latest version
+updated at 2022/8/10
+
+|===
+|Python version|Release version|Release Date|Download|End of Support
+| 3.10 | 3.10.6 |  Aug. 2, 2022 | link:https://www.python.org/downloads/release/python-3106/[Download] | 2026-10
+| 3.9 | 3.9.13 |  May 17, 2022 | link:https://www.python.org/downloads/release/python-3913/[Download] | 2025-10
+| 3.8 | 3.8.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3813/[Download] | 2024-10
+| 3.7 | 3.7.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3713/[Download] | 2023-06-27
+| 3.6 | 3.6.15 |  Sept. 4, 2021 | link:https://www.python.org/downloads/release/python-3615/[Download] | 2021-12-23
+| 3.5 | 3.5.10 |  Sept. 5, 2020 | link:https://www.python.org/downloads/release/python-3510/[Download] | 2020-09-13
+| 2.7 | 2.7.18 |  April 20, 2020 | link:https://www.python.org/downloads/release/python-2718/[Download] | 2020-01-01
+|===
+
+== How to
+
+* link:./Python3/Local_Install.md[ローカルにPythonをインストールする]
+* link:./SQLite/sqlite3_1.md[Python3 で使う SQLite のバージョンを変更する]
+* link:./Python3/Pip_Local.md[pip でのインストールをローカルにダウンロードしたファイルで行う]
+
+== References
+
+* link:https://docs.python.org/ja/3/[Python ドキュメント (docs.python.org) ]
+* link:https://www.python.org/downloads[Python Downloads (www.python.org) ]
+* link:https://pypi.org/[Python Package Index (pypi.org) ]
