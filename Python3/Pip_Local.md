@@ -33,7 +33,7 @@ wget https://files.pythonhosted.org/packages/96/c2/3dd434b0108730014f1b96fd28604
 
 ## パッケージのインストール
 引数にパッケージ名を指定してpip installを実行する。  
---user オプションで管理者権限無しでインストールできる。
+--user オプションで管理者権限無しでインストールできる。  
 --no-index オプションでPyPIへの参照を無効化し、  
 --find-links オプションで指定したディレクトリからパッケージを検索する。  
 環境変数 **PYTHONUSERBASE** で user install のインストール先を変更できる（デフォルトは `~/.local` ）。
