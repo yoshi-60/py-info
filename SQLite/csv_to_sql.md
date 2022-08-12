@@ -17,14 +17,55 @@ import sqlite3
 
 def csv_to_sql(fcsv,fsql,hlist):
   print(fcsv,fsql)
-  return()
+  # csvデータを2次元配列 rowsに読み込む
+  rows = []
+  rnum = 0
+  with open(fcsv, 'r') as f: 
+    read_csv = csv.reader(f)
+    row0 = next(read_csv)
+    for row in read_csv:
+      rows.append(row)
+      rnum = rnum + 1
+
+  # SQLiteのテーブル作成用テキスト作成
+  tname = hlist.pop(0)
+  header_txt = "id_sql INTEGER PRIMARY KEY"
+  cnum = 0
+  if len(hlist) > 0:
+    for col in hlist:
+      header_txt = header_txt + ", " + col + " TEXT"
+      cnum = cnum + 1
+    insert_txt = ",".join(hlist)
+  else:
+    for col in row0:
+      header_txt = header_txt + ", " + col + " TEXT"
+      cnum = cnum + 1
+    insert_txt = ",".join(row0)
+  value_txt = "?"
+  for i in range(cnum - 1):
+    value_txt = value_txt + ",?"
+
+  conn = sqlite3.connect(fsql)
+  cur = conn.cursor()
+
+  # テーブル作成
+  exec_str = "CREATE TABLE IF NOT EXISTS " + tname + " (" + header_txt + ")"
+  cur.execute( exec_str )
+  # データ追加
+  exec_str = "INSER INTO " + tname + " (" + insert_txt + ") VALUES (" + value_txt + ")"
+  cur.executemany( exec_str , rows)
+  
+  conn.commit()
+  cur.close()
+  conn.close()
+  return(rnum)
 
 if __name__ == '__main__':
   args = sys.argv
   if 4 <= len(args):
     if args[1].isfile():
       hlist = []
-      for i in range( 3, len(args)-1 ):
+      for i in range( 3, len(args) ):
         hlist.append(args[i])
       csv_to_sql(args[1], args[2], hlist)
     else:
@@ -34,4 +75,6 @@ if __name__ == '__main__':
     print(f'  {args[0]} input_csv output_db table_name [col1 col2 col3]')
 ```
 
-## Referebce
+## Reference
+* [sqlite3 (docs.python.org](https://docs.python.org/ja/3/library/sqlite3.html)
+* [csv (docs.python.org)](https://docs.python.org/ja/3/library/csv.html)
