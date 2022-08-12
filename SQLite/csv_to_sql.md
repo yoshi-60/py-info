@@ -20,12 +20,15 @@ def csv_to_sql(fcsv,fsql,hlist):
   # csvデータを2次元配列 rowsに読み込む
   rows = []
   rnum = 0
+  cnum_max = 0
   with open(fcsv, 'r') as f: 
     read_csv = csv.reader(f)
     row0 = next(read_csv)
     for row in read_csv:
       rows.append(row)
+      cnum_max = max(len(row),cnum_max)
       rnum = rnum + 1
+  print(f'Recore: {rnum} , Field: {cnum_max}')
 
   # SQLiteのテーブル作成用テキスト作成
   tname = hlist.pop(0)
@@ -41,8 +44,15 @@ def csv_to_sql(fcsv,fsql,hlist):
       header_txt = header_txt + ", " + col + " TEXT"
       cnum = cnum + 1
     insert_txt = ",".join(row0)
+
+  # headerの数が不足していた時の処置
+  if cnum < cnum_max:
+    for col in range(cnum, cnum_max)
+      header_txt = header_txt + ", col_" + str(col+1) + " TEXT"
+      insert_txt = insert_txt + ", col_" + str(col+1)
+
   value_txt = "?"
-  for i in range(cnum - 1):
+  for i in range(cnum_max - 1):
     value_txt = value_txt + ",?"
 
   conn = sqlite3.connect(fsql)
@@ -50,15 +60,17 @@ def csv_to_sql(fcsv,fsql,hlist):
 
   # テーブル作成
   exec_str = "CREATE TABLE IF NOT EXISTS " + tname + " (" + header_txt + ")"
+  print(exec_str)
   cur.execute( exec_str )
   # データ追加
   exec_str = "INSER INTO " + tname + " (" + insert_txt + ") VALUES (" + value_txt + ")"
+  print(exec_str)
   cur.executemany( exec_str , rows)
   
   conn.commit()
   cur.close()
   conn.close()
-  return(rnum)
+  return(rnum,cnum_max)
 
 if __name__ == '__main__':
   args = sys.argv
