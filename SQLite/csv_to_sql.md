@@ -13,6 +13,7 @@ CSVファイルからSQLite3のデータベースを作成する。
 ```Python
 #!/usr/bin/env python3
 import sys
+import os
 import csv
 import sqlite3
 
@@ -86,7 +87,7 @@ if __name__ == '__main__':
       hidx = args.index(hkey)
       hval = int(args[hidx+1])
       del args[hidx:hidx+2]
-    if args[1].isfile():
+    if os.path.isfile(args[1]):
       hlist = []
       for i in range( 3, len(args) ):
         hlist.append(args[i])
