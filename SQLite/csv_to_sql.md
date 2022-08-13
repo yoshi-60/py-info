@@ -51,7 +51,7 @@ def csv_to_sql(fcsv,fsql,hval,hlist):
 
   # headerの数が不足していた時の処置
   if cnum < cnum_max:
-    for col in range(cnum, cnum_max)
+    for col in range(cnum, cnum_max):
       header_txt = header_txt + ", col_" + str(col+1) + " TEXT"
       insert_txt = insert_txt + ", col_" + str(col+1)
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     else:
       print(f'File {args[1]} Not Found!')
   else:
-    print(f'Usage:`)
+    print(f'Usage:')
     print(f'  {args[0]} [-h line_num] input_csv output_db table_name [col1 col2 col3]')
 ```
 
