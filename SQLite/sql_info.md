@@ -19,14 +19,43 @@ def print_sql_info(fsql,tlist):
   conn = sqlite3.connect(fsql)
   cur = conn.cursor()
   
-  # テーブル作成
-  exec_str = "SELECT * FROM sqlite_master where type='table'"
+  # テーブル名取得
+  table_names = []
+  exec_str = "SELECT * FROM sqlite_master where type='table' ;"
   cur.execute( exec_str )
   for row in cur.fetchall():
-    print(row)
+    #print(row)
+    table_names.append(row[2])
 
+  # レコード数、カラム名、データ型 取得
+  table_infos = []
+  for table_name in table_names:
+    exec_str = "SELECT count(*) FROM " + table_name + " ;"
+    cur.execute( exec_str )
+    record = cur.fetchall()
+    #print(record)
+    record_max = record[0][0]
+    exec_str = "SELECT * FROM " + table_name + " LIMIT 1;"
+    cur.execute( exec_str )
+    table_info = [ table_name , record_max ]
+    col_names = []
+    for col in cur.description:
+      #print(col[0])
+      exec_str = "SELECT typeof(" + col[0] + ") FROM " + table_name + " LIMIT 1;"
+      cur.execute( exec_str )
+      type_list = cur.fetchall()
+      #print(type_list[0][0])
+      col_names.append([col[0],type_list[0][0]])
+
+    table_info.append(col_names)
+    table_infos.append(table_info)
+ 
   cur.close()
   conn.close()
+  
+  for table_info in table_infos:
+    print(f'table_name: {table_info[0]}, Record_num: {table_info[1]}, Column_name: ', table_info[2])
+  
   return()
 
 if __name__ == '__main__':
@@ -41,7 +70,8 @@ if __name__ == '__main__':
       print(f'File {args[1]} Not Found!')
   else:
     print(f'Usage:')
-    print(f'  {args[0]} input_db [table_name1 ...]')
+    #print(f'  {args[0]} input_db [table_name1 ...]')
+    print(f'  {args[0]} input_db'
 ```
 
 ## Reference
