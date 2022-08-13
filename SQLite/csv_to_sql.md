@@ -5,7 +5,8 @@ CSVファイルからSQLite3のデータベースを作成する。
 1. CSVファイル名とSQLiteのデータベースファイル名は引数として与える。
 2. CSVファイルの1行目はヘッダとして、SQLiteのカラム名に設定する。
 3. CSVファイルのヘッダを使用しないオプションも可能とする。
-4. SQLiteのインデックスは1カラム目に新規に追加する。
+4. CSVファイルの読み込み開始行を指定できるようにする。
+5. SQLiteのインデックスは1カラム目に新規に追加する。
 
 ## Pythonのコード
 
@@ -15,15 +16,18 @@ import sys
 import csv
 import sqlite3
 
-def csv_to_sql(fcsv,fsql,hlist):
+def csv_to_sql(fcsv,fsql,hval,hlist):
   print(fcsv,fsql)
   # csvデータを2次元配列 rowsに読み込む
+  #   hvalで指定された行数をheader行としてそれ以降を読み込む
+  #   hval = 0 はcsvデータにheader行が無いもの（すべてデータ行）とする
   rows = []
   rnum = 0
   cnum_max = 0
   with open(fcsv, 'r') as f: 
     read_csv = csv.reader(f)
-    row0 = next(read_csv)
+    for row in range(hval):
+      row0 = next(read_csv)
     for row in read_csv:
       rows.append(row)
       cnum_max = max(len(row),cnum_max)
@@ -34,7 +38,7 @@ def csv_to_sql(fcsv,fsql,hlist):
   tname = hlist.pop(0)
   header_txt = "id_sql INTEGER PRIMARY KEY"
   cnum = 0
-  if len(hlist) > 0:
+  if (hval == 0) or (len(hlist) > 0) :
     for col in hlist:
       header_txt = header_txt + ", " + col + " TEXT"
       cnum = cnum + 1
@@ -74,17 +78,24 @@ def csv_to_sql(fcsv,fsql,hlist):
 
 if __name__ == '__main__':
   args = sys.argv
-  if 4 <= len(args):
+  hkey = '-h'
+  hval = 1
+  arg_num = 6 if hkey in args else 4
+  if arg_num <= len(args):
+    if hkey in args:
+      hidx = args.index(hkey)
+      hval = int(args[hidx+1])
+      del args[hidx:hidx+2]
     if args[1].isfile():
       hlist = []
       for i in range( 3, len(args) ):
         hlist.append(args[i])
-      csv_to_sql(args[1], args[2], hlist)
+      csv_to_sql(args[1], args[2], hval, hlist)
     else:
       print(f'File {args[1]} Not Found!')
   else:
     print(f'Usage:`)
-    print(f'  {args[0]} input_csv output_db table_name [col1 col2 col3]')
+    print(f'  {args[0]} [-h header_num] input_csv output_db table_name [col1 col2 col3]')
 ```
 
 ## Reference
