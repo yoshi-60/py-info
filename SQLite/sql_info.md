@@ -37,9 +37,10 @@ def print_sql_info(fsql,tlist):
     record_max = record[0][0]
     exec_str = "SELECT * FROM " + table_name + " LIMIT 1;"
     cur.execute( exec_str )
+    desc = cur.description
     table_info = [ table_name , record_max ]
     col_names = []
-    for col in cur.description:
+    for col in desc:
       #print(col[0])
       exec_str = "SELECT typeof(" + col[0] + ") FROM " + table_name + " LIMIT 1;"
       cur.execute( exec_str )
