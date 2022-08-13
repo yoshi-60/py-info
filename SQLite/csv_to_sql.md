@@ -95,7 +95,7 @@ if __name__ == '__main__':
       print(f'File {args[1]} Not Found!')
   else:
     print(f'Usage:`)
-    print(f'  {args[0]} [-h header_num] input_csv output_db table_name [col1 col2 col3]')
+    print(f'  {args[0]} [-h line_num] input_csv output_db table_name [col1 col2 col3]')
 ```
 
 ## Reference
