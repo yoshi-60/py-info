@@ -39,23 +39,25 @@ def csv_to_sql(fcsv,fsql,hval,hlist):
   tname = hlist.pop(0)
   header_txt = "id_sql INTEGER PRIMARY KEY"
   cnum = 0
+  insert_list = []
   if (hval == 0) or (len(hlist) > 0) :
     for col in hlist:
       header_txt = header_txt + ", " + col + " TEXT"
       cnum = cnum + 1
-    insert_txt = ",".join(hlist)
+      insert_list.append(col)
   else:
     for col in row0:
       header_txt = header_txt + ", " + col + " TEXT"
       cnum = cnum + 1
-    insert_txt = ",".join(row0)
-
+      insert_list.append(col)
+  
   # headerの数が不足していた時の処置
   if cnum < cnum_max:
     for col in range(cnum, cnum_max):
       header_txt = header_txt + ", col_" + str(col+1) + " TEXT"
-      insert_txt = insert_txt + ", col_" + str(col+1)
+      insert_list.append( "col_" + str(col+1) )
 
+  insert_txt = ",".join(insert_list)
   value_txt = "?"
   for i in range(cnum_max - 1):
     value_txt = value_txt + ",?"
@@ -68,7 +70,7 @@ def csv_to_sql(fcsv,fsql,hval,hlist):
   print(exec_str)
   cur.execute( exec_str )
   # データ追加
-  exec_str = "INSER INTO " + tname + " (" + insert_txt + ") VALUES (" + value_txt + ")"
+  exec_str = "INSERT INTO " + tname + " (" + insert_txt + ") VALUES (" + value_txt + ")"
   print(exec_str)
   cur.executemany( exec_str , rows)
   
