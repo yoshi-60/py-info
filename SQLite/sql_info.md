@@ -77,4 +77,5 @@ if __name__ == '__main__':
 
 ## Reference
 
+* [The Schema Table (www.sqlite.org)](https://www.sqlite.org/schematab.html#introduction)
 * [PRAGMA Statements (www.sqlite.org)](https://www.sqlite.org/pragma.html)
