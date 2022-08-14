@@ -42,3 +42,8 @@ if __name__ == '__main__':
     print(f'Usage:')
     print(f'  {args[0]} input_db output_db table_name')
 ```
+
+## Reference
+
+* [ATTACH DATABASE (www.sqlite.org)](https://www.sqlite.org/lang_attach.html)
+* [CREATE TABLE ... AS SELECT Statements (www.sqlite.org)](https://www.sqlite.org/lang_createtable.html#create_table_as_select_statements)
