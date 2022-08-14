@@ -11,7 +11,7 @@ Excelファイルの操作に用いられる「openpyxl」を例に説明する�
 
 ```Shell
 mkdir -p $HOME/packages
-pip download -d $HOME/packages openpyxl==3.0.10
+python3 -m pip download -d $HOME/packages openpyxl==3.0.10
 ```
 
 ### 必要なファイルをブラウザからダウンロード
@@ -43,5 +43,5 @@ mkdir -p $HOME/local/python
 export PYTHONUSERBASE=$HOME/local/python
 python3 -m site --user-base
 
-pip install --user --no-index --find-links=$HOME/packages openpyxl
+python3 -m pip install --user --no-index --find-links=$HOME/packages openpyxl
 ```
