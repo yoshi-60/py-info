@@ -18,7 +18,7 @@ def sql_tbl_cp(fsqli, fsqlo, tname):
   conn = sqlite3.connect(fsqlo)
   cur = conn.cursor()
   # 入力側データベースに接続
-  exec_str = "ATTACH DATABASE " + fsqli + " as data1 ;"
+  exec_str = "ATTACH DATABASE '" + fsqli + "' as data1 ;"
   print(exec_str)
   cur.execute( exec_str )
   # テーブルのコピー作成
