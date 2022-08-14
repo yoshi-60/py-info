@@ -3,7 +3,7 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2022/8/13
+updated at 2022/8/14
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
@@ -24,6 +24,7 @@ updated at 2022/8/13
 * link:./Python3/Pip_Local.md[pip でのインストールをローカルにダウンロードしたファイルで行う]
 * link:./SQLite/csv_to_sql.md[【Python】CSVファイルをSQLiteにインポートする]
 * link:./SQLite/sql_info.md[【Python】SQLiteのテーブル・カラム情報を取得する]
+* link:./SQLite/sql_cp.md[【Python】SQLiteで別ファイルにテーブルのコピーを作成する]
 
 == References
 
