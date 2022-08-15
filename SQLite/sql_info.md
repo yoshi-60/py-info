@@ -30,6 +30,7 @@ def print_sql_info(fsql,tlist):
   # レコード数、カラム名、データ型 取得
   table_infos = []
   for table_name in table_names:
+    # レコード数取得
     exec_str = "SELECT count(*) FROM " + table_name + " ;"
     cur.execute( exec_str )
     record = cur.fetchall()
@@ -37,11 +38,16 @@ def print_sql_info(fsql,tlist):
     record_max = record[0][0]
     exec_str = "SELECT * FROM " + table_name + " LIMIT 1;"
     cur.execute( exec_str )
+    # データ(1行目)を表示
+    for row in cur:
+      print(row)
+    # カラム名取得
     desc = cur.description
     table_info = [ table_name , record_max ]
     col_names = []
     for col in desc:
       #print(col[0])
+      # データ型取得
       exec_str = "SELECT typeof(" + col[0] + ") FROM " + table_name + " LIMIT 1;"
       cur.execute( exec_str )
       type_list = cur.fetchall()
