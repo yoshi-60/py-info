@@ -5,8 +5,9 @@ CSVファイルからSQLite3のデータベースを作成する。
 1. CSVファイル名とSQLiteのデータベースファイル名は引数として与える。
 2. CSVファイルの1行目はヘッダとして、SQLiteのカラム名に設定する。
 3. CSVファイルのヘッダを使用しないオプションも可能とする。
-4. CSVファイルの読み込み開始行を指定できるようにする。
-5. SQLiteのインデックスは1カラム目に新規に追加する。
+4. CSVファイルの読み込み開始行を指定できるようにする。（-h オプション）
+5. TSVファイルの読み込みにも対応する。（-t オプション）
+6. SQLiteのインデックスは1カラム目に新規に追加する。
 
 ## Pythonのコード
 
@@ -17,16 +18,19 @@ import os
 import csv
 import sqlite3
 
-def csv_to_sql(fcsv,fsql,hval,hlist):
+def csv_to_sql(fcsv,fsql,dval,hval,hlist):
   print(fcsv,fsql)
+  print(sys.getfilesystemencoding())
   # csvデータを2次元配列 rowsに読み込む
   #   hvalで指定された行数をheader行としてそれ以降を読み込む
   #   hval = 0 はcsvデータにheader行が無いもの（すべてデータ行）とする
+  #   dval に delimiterを設定する
   rows = []
   rnum = 0
   cnum_max = 0
+  # 日本語が含まれる場合 open(fcsv, 'r', encoding='utf-8') とする必要があるかも 
   with open(fcsv, 'r') as f: 
-    read_csv = csv.reader(f)
+    read_csv = csv.reader(f, delimiter=dval)
     for row in range(hval):
       row0 = next(read_csv)
     for row in read_csv:
@@ -82,23 +86,31 @@ def csv_to_sql(fcsv,fsql,hval,hlist):
 if __name__ == '__main__':
   args = sys.argv
   hkey = '-h'
+  dkey = '-t'
   hval = 1
-  arg_num = 6 if hkey in args else 4
+  dval = ','
+  arg_num = 4
+  arg_num = (arg_num + 2) if hkey in args else arg_num
+  arg_num = (arg_num + 1) if dkey in args else arg_num
   if arg_num <= len(args):
     if hkey in args:
-      hidx = args.index(hkey)
-      hval = int(args[hidx+1])
-      del args[hidx:hidx+2]
+      aidx = args.index(hkey)
+      hval = int(args[aidx+1])
+      del args[aidx:aidx+2]
+    if dkey in args:
+      aidx = args.index(dkey)
+      dval = '\t'
+      del args[aidx]
     if os.path.isfile(args[1]):
       hlist = []
       for i in range( 3, len(args) ):
         hlist.append(args[i])
-      csv_to_sql(args[1], args[2], hval, hlist)
+      csv_to_sql(args[1], args[2], dval, hval, hlist)
     else:
       print(f'File {args[1]} Not Found!')
   else:
     print(f'Usage:')
-    print(f'  {args[0]} [-h line_num] input_csv output_db table_name [col1 col2 col3]')
+    print(f'  {args[0]} [-h line_num] [-t] input_csv output_db table_name [col1 col2 col3]')
 ```
 
 ## Reference
