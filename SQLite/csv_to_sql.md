@@ -130,7 +130,8 @@ if __name__ == '__main__':
     print(f'  {args[0]} [-h line_num] [-t] input_csv output_db table_name [col1 col2 col3] [-d type1 type2 type3]')
 ```
 
-## Reference
+## References
+
 * [sqlite3 (docs.python.org)](https://docs.python.org/ja/3/library/sqlite3.html)
 * [csv (docs.python.org)](https://docs.python.org/ja/3/library/csv.html)
 * [Datatypes In SQLite (www.sqlite.org)](https://www.sqlite.org/datatype3.html)
