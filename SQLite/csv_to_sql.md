@@ -1,4 +1,5 @@
 # 【Python】CSVファイルをSQLiteにインポートする
+updated at 2022/8/15
 
 ## 実行内容
 CSVファイルからSQLite3のデータベースを作成する。
