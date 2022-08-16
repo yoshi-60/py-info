@@ -161,4 +161,4 @@ if __name__ == '__main__':
 ## References
 
 * [CSV File Reading and Writing (docs.python.org)](https://docs.python.org/ja/3/library/csv.html)
-* [Built-in Aggregate Functions (www.sqlite.org)](https://www.sqlite.org/lang_aggfunc.html#count)
+* [Built-in Aggregate Functions (www.sqlite.org)](https://www.sqlite.org/lang_aggfunc.html#descriptions_of_built_in_aggregate_functions)
