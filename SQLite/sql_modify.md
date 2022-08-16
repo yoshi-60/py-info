@@ -3,7 +3,13 @@
 ## 実行内容
 複数のSQLiteファイルにあるテーブルを参照して操作(抽出、結合等)を行い。  
 結果を別のSQLiteファイルに出力する。
+SQLiteの操作用コマンドは別ファイルから与える。
 
+実行例
+
+```Shell
+python3 sql_modify.py output.db -f exec_list.txt data1.db data2.db
+```
 
 ## Pythonのコード
 操作用テキストファイルの例
