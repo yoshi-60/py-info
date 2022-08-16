@@ -4,7 +4,20 @@
 複数のSQLiteファイルにあるテーブルを参照して操作(抽出、結合等)を行い。  
 結果を別のSQLiteファイルに出力する。
 
+
 ## Pythonのコード
+操作用テキストファイルの例
+
+```SQL
+# Comment
+CREATE TABLE new_table (id_sql INTEGER, col_1 TEXT, col_2 TEXT, col_3 TEXT) ;
+INSERT INTO new_table (id_sql, col_1, col_2) SELECT id_sql, col_1, col_2 FROM data_1.table2021 ;
+INSERT INTO new_table (col_3) SELECT col_2 FROM data_2.table2022 ;
+ALTER  TABLE new_table ADD COLUMN add_col TEXT ;
+# END
+```
+
+Pythonコード
 
 ```Python
 #!/usr/bin/env python3
@@ -12,12 +25,12 @@ import sys
 import os
 import sqlite3
 
-def print_usage(arg0)
+def print_usage(arg0):
   print(f'Usage:')
   print(f'  {arg0} output_db -f command_file [input_db1 input_db2 ...]')
   return()
 
-def sql_modify(args[1], fname, db_list)(fsqlo, fname, db_list):
+def sql_modify(fsqlo, fname, db_list):
   print(fsqlo, fname, db_list)
 
   # 出力用データベース作成
@@ -25,7 +38,7 @@ def sql_modify(args[1], fname, db_list)(fsqlo, fname, db_list):
   cur = conn.cursor()
 
   # 入力側データベースに接続
-  db_no = 0
+  db_num = 0
   for dname in db_list:
     db_num = db_num + 1
     db_str = "data_" + str(db_num)
@@ -34,15 +47,17 @@ def sql_modify(args[1], fname, db_list)(fsqlo, fname, db_list):
     cur.execute( exec_str )
 
   # 操作用文字列取得
+  # 先頭文字が "#" の行を除外する
   exec_list = []
-  with open(fname, 'r') as f:
+  with open(fname, 'r', encoding='utf-8') as f:
     rows = f.readlines()
     for row in rows:
-      exec_list.append(row.rstrip('\n'))
-  
+      if row.find('#') != 0:
+        exec_list.append(row.rstrip('\n'))
+
   # 操作実行
   exec_num = 0
-  for exec_str in exec_list
+  for exec_str in exec_list:
     exec_num = exec_num + 1
     print(f'Execute: {exec_num}')
     print(exec_str)
