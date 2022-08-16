@@ -3,7 +3,7 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2022/8/14
+updated at 2022/8/16
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
@@ -26,6 +26,7 @@ updated at 2022/8/14
 * link:./SQLite/sql_info.md[【Python】SQLiteのテーブル・カラム情報を取得する]
 * link:./SQLite/sql_cp.md[【Python】SQLiteで別ファイルにテーブルのコピーを作成する]
 * link:./SQLite/sql_to_csv.md[【Python】SQLiteからCSVファイルに出力する]
+* link:./SQLite/sql_modify.md[【Python】複数のSQLiteファイルの操作結果を別のSQLiteファイルに出力する]
 
 == References
 
