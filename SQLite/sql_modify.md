@@ -11,8 +11,8 @@
 ```SQL
 # Comment
 CREATE TABLE new_table (id_sql INTEGER, col_1 TEXT, col_2 TEXT, col_3 TEXT) ;
-INSERT INTO new_table (id_sql, col_1, col_2) SELECT id_sql, col_1, col_2 FROM data_1.table2021 ;
-INSERT INTO new_table (col_3) SELECT col_2 FROM data_2.table2022 ;
+INSERT INTO new_table (id_sql, col_1, col_2) SELECT id_sql, col_1, col_2 FROM data_1.table1 ;
+UPDATE new_table SET  col_3 = B.col_2 FROM ( SELECT col_1, col_2 FROM data_2.table2 ) AS B WHERE new_table.col_1 = B.col_1 ;
 ALTER  TABLE new_table ADD COLUMN add_col TEXT ;
 # END
 ```
