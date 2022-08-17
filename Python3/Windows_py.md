@@ -12,11 +12,30 @@ updated at 2022/8/17
 
 ### パッケージのインストール
 
-* ダウンロードしたパッケージを実行する。（Python 3.10.6 の場合は python-3.10.6-amd64.exe）
+* ダウンロードしたパッケージを実行する。  
+（Python 3.10.6 の場合は python-3.10.6-amd64.exe）  
+<img width="480" alt="python-3.10.6-amd64" src="https://user-images.githubusercontent.com/49278963/185079105-bfe11488-ac54-4717-a1a5-19e19e45e03f.png">
 
 * Install Nowをクリックすればよい。  
-Windowsの場合、Pythonランチャー(py.exe)がインストールされるので
-「Add Python 3.10 to PATH」にチェックを入れる必要はない。
+Windowsの場合、Pythonランチャー(py.exe) がインストールされるので  
+「Add Python 3.10 to PATH」はチェックしなくてもよい。
+
+コマンドプロンプトからバージョンを確認する
+
+```powershell
+C:\Users\username>py -V
+Python 3.10.3
+```
+
+**.py** ファイルの関連付けを確認しておく
+```powershell
+C:\Users\username>assic .py
+.py=Python.File
+
+C:\Users\username>ftype Python.File
+Python.File="C:\WINDOWS\py.exe" "%L" "%*"
+```
+
 
 ## References
 
