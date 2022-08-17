@@ -22,6 +22,7 @@ updated at 2022/8/16
 * link:./Python3/Local_Install.md[ローカルにPythonをインストールする]
 * link:./SQLite/sqlite3_1.md[Python3 で使う SQLite のバージョンを変更する]
 * link:./Python3/Pip_Local.md[pip でのインストールをローカルにダウンロードしたファイルで行う]
+* link:./Python3/Windows_py.md[WindowsでPythonを使う]
 * link:./SQLite/csv_to_sql.md[【Python】CSVファイルをSQLiteにインポートする]
 * link:./SQLite/sql_info.md[【Python】SQLiteのテーブル・カラム情報を取得する]
 * link:./SQLite/sql_cp.md[【Python】SQLiteで別ファイルにテーブルのコピーを作成する]
