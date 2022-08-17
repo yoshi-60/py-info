@@ -29,7 +29,7 @@ Python 3.10.6
 
 **.py** ファイルの関連付けを確認しておく
 ```powershell
-C:\Users\username>assic .py
+C:\Users\username>assoc .py
 .py=Python.File
 
 C:\Users\username>ftype Python.File
