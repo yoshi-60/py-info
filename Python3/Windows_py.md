@@ -24,7 +24,7 @@ Windowsの場合、Pythonランチャー(py.exe) がインストールされる�
 
 ```powershell
 C:\Users\username>py -V
-Python 3.10.3
+Python 3.10.6
 ```
 
 **.py** ファイルの関連付けを確認しておく
