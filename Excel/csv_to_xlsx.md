@@ -11,15 +11,16 @@ import sys
 import os
 import pathlib
 import csv
-import openpyxl
+from openpyxl import load_workbook
+from openpyxl import Workbook
 
 # 引数不足時に使用方法を表示
 def print_usage(arg0):
   print(f'Usage:')
-  print(f'  {args[0]} [-h line_num] [-t] input_csv output_xlsx [-s sheet_name] [col1 col2 col3]')
+  print(f'  {args[0]} [-h line_num] [-t] input_csv output_xlsx [-s sheet_name] [-c cell_address] [col1 col2 col3]')
   return()
 
-def csv_to_xlsx(fcsv,fxlsx,shname,dval,hval,hlist):
+def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
   print(fcsv,fxlsx,shname)
   print(sys.getfilesystemencoding())
   # csvデータを2次元配列 rowsに読み込む
@@ -27,6 +28,7 @@ def csv_to_xlsx(fcsv,fxlsx,shname,dval,hval,hlist):
   #   hval = 0 はcsvデータにheader行が無いもの（すべてデータ行）とする
   #   dval に delimiterを設定する
   #   shname シート名を設定する
+  #   cadr 書き込み位置を指定する（A1形式）
   
   rows = []
   rnum = 0
@@ -41,7 +43,59 @@ def csv_to_xlsx(fcsv,fxlsx,shname,dval,hval,hlist):
       cnum_max = max(len(row),cnum_max)
       rnum = rnum + 1
   print(f'Recore: {rnum} , Field: {cnum_max}')
- 
+
+  # ヘッダ作成
+  cnum = 0
+  hrader_list = []
+  if (hval == 0) or (len(hlist) > 0) :
+    for col in hlist:
+      cnum = cnum + 1
+      header_list.append(col)
+  else:
+    for col in row0:
+      cnum = cnum + 1
+      header_list.append(col)
+  # headerの数が不足していた時の処置
+  if cnum < cnum_max:
+    for col in range(cnum, cnum_max):
+      header_list.append( "col_" + str(col+1) )
+
+  # Excelのブックを開く
+  if os.path.isfile(fxlsx):
+    wb = load_workbook(filename=fxlsx, read_only=False)
+  else:
+    wb = Workbook()
+  # シートの存在確認と作成
+  shchk = False
+  for ws in wb.worksheets:
+    if ws.title == shname:
+      shchk = True
+      break
+  if shchk:
+    ws = wb[shname]
+  else:
+    ws = wb.create_sheet(shname)
+  
+  # 書き込み
+  irow = ws[cadr].row
+  icol = ws[cadr].column
+  r = irow
+  c = icol
+  for val in header_list:
+    ws.cell(row=r,column=c).value=val
+    c = c + 1
+  for row in rows:
+    r = r + 1
+    c = icol
+    for val in row:
+      ws.cell(row=r,column=c).value=val
+      c = c + 1
+  irow_max = r - 1
+  icol_max = icol + cnum_max - 1
+  
+  wb.save(filename=fxlsx)
+  wb.close()
+  
   return(rnum,cnum_max)
 
 if __name__ == '__main__':
@@ -49,14 +103,17 @@ if __name__ == '__main__':
   hkey = '-h'
   dkey = '-t'
   skey = '-s'
+  ckey = '-c'
   hval = 1
   dval = ','
-  shname = 'sheet1'
-
+  shname = 'Sheet1'
+  cval = 'A1'
+  
   arg_num = 2
   arg_num = (arg_num + 2) if hkey in args else arg_num
   arg_num = (arg_num + 1) if dkey in args else arg_num
   arg_num = (arg_num + 2) if skey in args else arg_num
+  arg_num = (arg_num + 2) if ckey in args else arg_num
   if arg_num <= len(args):
     if hkey in args:
       aidx = args.index(hkey)
@@ -70,16 +127,20 @@ if __name__ == '__main__':
       aidx = args.index(hkey)
       shname = args[aidx+1]
       del args[aidx:aidx+2]
+    if ckey in args:
+      aidx = args.index(hkey)
+      cval = args[aidx+1]
+      del args[aidx:aidx+2]
     if os.path.isfile(args[1]):
       #シート名をCSVファイル名から取得(-s 指定が無かった時)
-      if shname == 'sheet1' :
+      if shname == 'Sheet1' :
         csv_file = pathlib.Path(args[1])
         shname = csv_file.stem
       #カラムヘッダを取得（指定されていた場合のみ）
       hlist = []
       for i in range( 3, len(args) ):
         hlist.append(args[i])
-      csv_to_xlsx(args[1], args[2], shname, dval, hval, hlist)
+      csv_to_xlsx(args[1], args[2], shname, cval, dval, hval, hlist)
     else:
       print(f'File {args[1]} Not Found!')
   else:
