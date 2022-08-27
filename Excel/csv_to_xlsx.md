@@ -9,6 +9,7 @@ CSVファイルを Excel(xlsx)のシートに読み込む。
 #!/usr/bin/env python3
 import sys
 import os
+import pathlib
 import csv
 import openpyxl
 
@@ -48,19 +49,14 @@ if __name__ == '__main__':
   hkey = '-h'
   dkey = '-t'
   skey = '-s'
-  tlist = []
   hval = 1
   dval = ','
+  shname = 'sheet1'
 
-  if tkey in args:
-    aidx = args.index(tkey)
-    for i in range( aidx+1, len(args) ):
-      tlist.append(args[i])
-    del args[aidx:len(args)]
-  print(tlist)
-  arg_num = 4
+  arg_num = 2
   arg_num = (arg_num + 2) if hkey in args else arg_num
   arg_num = (arg_num + 1) if dkey in args else arg_num
+  arg_num = (arg_num + 2) if skey in args else arg_num
   if arg_num <= len(args):
     if hkey in args:
       aidx = args.index(hkey)
@@ -70,11 +66,20 @@ if __name__ == '__main__':
       aidx = args.index(dkey)
       dval = '\t'
       del args[aidx]
+    if skey in args:
+      aidx = args.index(hkey)
+      shname = args[aidx+1]
+      del args[aidx:aidx+2]
     if os.path.isfile(args[1]):
+      #シート名をCSVファイル名から取得(-s 指定が無かった時)
+      if shname == 'sheet1' :
+        csv_file = pathlib.Path(args[1])
+        shname = csv_file.stem
+      #カラムヘッダを取得（指定されていた場合のみ）
       hlist = []
       for i in range( 3, len(args) ):
         hlist.append(args[i])
-      csv_to_sql(args[1], args[2], dval, hval, hlist, tlist)
+      csv_to_xlsx(args[1], args[2], shname, dval, hval, hlist)
     else:
       print(f'File {args[1]} Not Found!')
   else:
@@ -85,3 +90,4 @@ if __name__ == '__main__':
 
 * [csv (docs.python.org)](https://docs.python.org/ja/3/library/csv.html)
 * [openpyxl Docs (https://openpyxl.readthedocs.io/)](https://openpyxl.readthedocs.io/en/stable/#introduction)
+* [pathlib (docs.python.org)](https://docs.python.org/ja/3/library/pathlib.html))
