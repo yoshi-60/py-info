@@ -13,6 +13,7 @@ import pathlib
 import csv
 from openpyxl import load_workbook
 from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
 
 # 引数不足時に使用方法を表示
 def print_usage(arg0):
@@ -87,8 +88,13 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
     for val in row:
       ws.cell(row=r,column=c).value=val
       c = c + 1
-  irow_max = r - 1
+  irow_max = r
   icol_max = icol + cnum_max - 1
+  
+  col_max_letter = get_column_letter(icol_max)
+  range_str = cadr + ":" + col_max_letter + str(irow_max)
+  print(range_str)
+  ws.auto_filter.ref = range_str
   
   wb.save(filename=fxlsx)
   wb.close()
