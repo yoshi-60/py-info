@@ -148,5 +148,6 @@ if __name__ == '__main__':
 ## References
 
 * [csv (docs.python.org)](https://docs.python.org/ja/3/library/csv.html)
-* [openpyxl Docs (https://openpyxl.readthedocs.io/)](https://openpyxl.readthedocs.io/en/stable/#introduction)
 * [pathlib (docs.python.org)](https://docs.python.org/ja/3/library/pathlib.html))
+* [openpyxl Workbook (https://openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html#module-openpyxl.workbook.workbook)
+* [openpyxl load_workbook (https://openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.reader.excel.html#openpyxl.reader.excel.load_workbook)
