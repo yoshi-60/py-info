@@ -17,7 +17,7 @@ from openpyxl import Workbook
 # 引数不足時に使用方法を表示
 def print_usage(arg0):
   print(f'Usage:')
-  print(f'  {args[0]} [-h line_num] [-t] input_csv output_xlsx [-s sheet_name] [-c cell_address] [col1 col2 col3]')
+  print(f'  {arg0} [-h line_num] [-t] input_csv output_xlsx [-s sheet_name] [-c cell_address] [col1 col2 col3]')
   return()
 
 def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
@@ -46,7 +46,7 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
 
   # ヘッダ作成
   cnum = 0
-  hrader_list = []
+  header_list = []
   if (hval == 0) or (len(hlist) > 0) :
     for col in hlist:
       cnum = cnum + 1
@@ -65,13 +65,10 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
     wb = load_workbook(filename=fxlsx, read_only=False)
   else:
     wb = Workbook()
+    ws = wb.worksheets[0]
+    ws.title = shname
   # シートの存在確認と作成
-  shchk = False
-  for ws in wb.worksheets:
-    if ws.title == shname:
-      shchk = True
-      break
-  if shchk:
+  if shname in wb.sheetnames:
     ws = wb[shname]
   else:
     ws = wb.create_sheet(shname)
@@ -109,7 +106,7 @@ if __name__ == '__main__':
   shname = 'Sheet1'
   cval = 'A1'
   
-  arg_num = 2
+  arg_num = 3
   arg_num = (arg_num + 2) if hkey in args else arg_num
   arg_num = (arg_num + 1) if dkey in args else arg_num
   arg_num = (arg_num + 2) if skey in args else arg_num
@@ -124,11 +121,11 @@ if __name__ == '__main__':
       dval = '\t'
       del args[aidx]
     if skey in args:
-      aidx = args.index(hkey)
+      aidx = args.index(skey)
       shname = args[aidx+1]
       del args[aidx:aidx+2]
     if ckey in args:
-      aidx = args.index(hkey)
+      aidx = args.index(ckey)
       cval = args[aidx+1]
       del args[aidx:aidx+2]
     if os.path.isfile(args[1]):
@@ -138,13 +135,14 @@ if __name__ == '__main__':
         shname = csv_file.stem
       #カラムヘッダを取得（指定されていた場合のみ）
       hlist = []
-      for i in range( 3, len(args) ):
-        hlist.append(args[i])
+      if 4 <= len(args):
+        for i in range( 3, len(args) ):
+          hlist.append(args[i])
       csv_to_xlsx(args[1], args[2], shname, cval, dval, hval, hlist)
     else:
       print(f'File {args[1]} Not Found!')
   else:
-    print_usage( arg[0] )
+    print_usage( args[0] )
 ```
 
 ## References
