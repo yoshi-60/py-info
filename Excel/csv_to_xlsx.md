@@ -146,8 +146,10 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,bval,wval,hval,hlist):
     ws = wb.create_sheet(shname)
   
   # Excelのフォーマット等の設定
-  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='000000')
-  val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='000000')
+  # Fone(name='Calibri', size=11, bold=False, italic=False, underline='none', strike=False,
+  #      vertAlign=None, color='FF000000')
+  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='ff000000')
+  val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='ff000000')
   header_p = PatternFill(patternType='solid', fgColor='88ccff')
   val_p    = PatternFill(patternType='solid', fgColor='ffffff')
   side_1   = Side(border_style='thin', color='000000')
