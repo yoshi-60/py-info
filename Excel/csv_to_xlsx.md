@@ -1,4 +1,5 @@
 # 【Python】CSVファイルをExcelにインポートする
+updated at 2022/8/28
 
 ## 実行内容
 CSVファイルを Excel(xlsx)のシートに読み込む。
