@@ -14,17 +14,34 @@ import csv
 from openpyxl import load_workbook
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font
+from openpyxl.styles import PatternFill
 
 # 引数不足時に使用方法を表示
 def print_usage(arg0):
   print(f'Usage:')
-  print(f'  {arg0} [-h line_num] [-t] input_csv output_xlsx [-s sheet_name] [-c cell_address] [col1 col2 col3]')
+  print(f'  {arg0} [-h line_num] [-t] [-n] [-v] input_csv output_xlsx [-s sheet_name] [-c cell_address] [col1 col2 col3]')
   return()
 
-def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
+def str_to_num(vstr):
+  try:
+    ival = int(vstr, 10)
+  except ValueError:
+    try:
+      fval = float(vstr)
+    except ValueError:
+      return vstr
+    else:
+      return fval
+  else:
+    return ival
+
+def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,hval,hlist):
   print(fcsv,fxlsx,shname)
   print(sys.getfilesystemencoding())
   # csvデータを2次元配列 rowsに読み込む
+  #   vval = 1 でcsvデータを数値に変換（可能な場合のみ）
+  #   nval = 1 でcsvデータに行番号を追加
   #   hvalで指定された行数をheader行としてそれ以降を読み込む
   #   hval = 0 はcsvデータにheader行が無いもの（すべてデータ行）とする
   #   dval に delimiterを設定する
@@ -39,15 +56,26 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
     read_csv = csv.reader(f, delimiter=dval)
     for row in range(hval):
       row0 = next(read_csv)
+    # CSVデータ読込み（行番号付加）
     for row in read_csv:
-      rows.append(row)
-      cnum_max = max(len(row),cnum_max)
+      row_num = [str_to_num(vstr) for vstr in row]
+      if nval == 0:
+        row_i = []
+      else:
+        row_i = [rnum + 1]
+      row_i.extend(row_num)
+      rows.append(row_i)
+      cnum_max = max(len(row_i),cnum_max)
       rnum = rnum + 1
   print(f'Recore: {rnum} , Field: {cnum_max}')
 
   # ヘッダ作成
-  cnum = 0
-  header_list = []
+  if nval == 0:
+    cnum = 0
+    header_list = []
+  else:
+    cnum = 1
+    header_list = ["No."]
   if (hval == 0) or (len(hlist) > 0) :
     for col in hlist:
       cnum = cnum + 1
@@ -74,6 +102,11 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
   else:
     ws = wb.create_sheet(shname)
   
+  # Excelのフォーマット等の設定
+  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='000000')
+  val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='000000')
+  header_p = PatternFill(patternType='solid', fgColor='88ccff')
+  val_p    = PatternFill(patternType='solid', fgColor='ffffff')
   # 書き込み
   irow = ws[cadr].row
   icol = ws[cadr].column
@@ -81,16 +114,21 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,hval,hlist):
   c = icol
   for val in header_list:
     ws.cell(row=r,column=c).value=val
+    ws.cell(row=r,column=c).font=header_f
+    ws.cell(row=r,column=c).fill=header_p
     c = c + 1
   for row in rows:
     r = r + 1
     c = icol
     for val in row:
       ws.cell(row=r,column=c).value=val
+      ws.cell(row=r,column=c).font=val_f
+      #ws.cell(row=r,column=c).fill=val_p
       c = c + 1
   irow_max = r
   icol_max = icol + cnum_max - 1
   
+  # フィルタ設定
   col_max_letter = get_column_letter(icol_max)
   range_str = cadr + ":" + col_max_letter + str(irow_max)
   print(range_str)
@@ -107,16 +145,22 @@ if __name__ == '__main__':
   dkey = '-t'
   skey = '-s'
   ckey = '-c'
+  nkey = '-n'
+  vkey = '-v'
   hval = 1
   dval = ','
   shname = 'Sheet1'
   cval = 'A1'
+  nval = 0
+  vval = 0
   
   arg_num = 3
   arg_num = (arg_num + 2) if hkey in args else arg_num
   arg_num = (arg_num + 1) if dkey in args else arg_num
   arg_num = (arg_num + 2) if skey in args else arg_num
   arg_num = (arg_num + 2) if ckey in args else arg_num
+  arg_num = (arg_num + 1) if nkey in args else arg_num
+  arg_num = (arg_num + 1) if vkey in args else arg_num
   if arg_num <= len(args):
     if hkey in args:
       aidx = args.index(hkey)
@@ -134,6 +178,14 @@ if __name__ == '__main__':
       aidx = args.index(ckey)
       cval = args[aidx+1]
       del args[aidx:aidx+2]
+    if nkey in args:
+      aidx = args.index(nkey)
+      nval = 1
+      del args[aidx]
+    if vkey in args:
+      aidx = args.index(vkey)
+      vval = 1
+      del args[aidx]
     if os.path.isfile(args[1]):
       #シート名をCSVファイル名から取得(-s 指定が無かった時)
       if shname == 'Sheet1' :
@@ -144,7 +196,7 @@ if __name__ == '__main__':
       if 4 <= len(args):
         for i in range( 3, len(args) ):
           hlist.append(args[i])
-      csv_to_xlsx(args[1], args[2], shname, cval, dval, hval, hlist)
+      csv_to_xlsx(args[1], args[2], shname, cval, dval, nval, vval, hval, hlist)
     else:
       print(f'File {args[1]} Not Found!')
   else:
