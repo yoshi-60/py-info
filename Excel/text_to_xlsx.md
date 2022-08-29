@@ -43,7 +43,7 @@ def print_usage(arg0):
   print(f'  {arg0}  input_txt  output_xlsx [-l start end] [-n] [-b] [-w] [-s sheet_name] [-c cell_address]')
   return()
 
-def line_calc(llist,lnum)
+def line_calc(llist,lnum):
   # Start
   if llist[0] == 0:
     lstart = 1
@@ -58,12 +58,12 @@ def line_calc(llist,lnum)
   # End
   if llist[1] == 0:
     lend = lnum
-  elif llist[1] > 0 and llist[0] <= lnum:
+  elif llist[1] > 0 and llist[1] <= lnum:
     lend = llist[1]
   elif llist[1] > lnum:
     lend = lnum
-  elif llist[1] > 0 - lnum
-    lend = lnum - llist[0]    
+  elif llist[1] > 0 - lnum:
+    lend = lnum - llist[1]    
   else:
     lend = 0
   if lstart == 0 or lend == 0 or lstart > lend:
@@ -81,7 +81,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   #   cadr 書き込み位置を指定する（A1形式）
   #   bval = 1 で罫線設定
   #   wval = 1 でセル幅自動設定
-  column_str_max = 132
+  column_str_max = 96
   rows = []
   rnum = 0
   clen_max = [0,0]
@@ -93,7 +93,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   lnum = len(read_txt)
   lstart,lend = line_calc(llist,lnum)
   if lstart > 0:
-    for ir in range(lstart,lend+1)
+    for ir in range(lstart,lend+1):
       row = read_txt[ir-1].rstrip('\n')
       col_max = max(col_max,len(row))
       if nval == 0:
@@ -108,7 +108,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   # ヘッダ作成
   txt_file = pathlib.Path(ftxt)
   file_name = txt_file.name
-  print(f'File name: {fname}')
+  print(f'File name: {file_name}')
   print(f'Column width: {clen_max}')
 
   # Excelのブックを開く
@@ -131,7 +131,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='ff000000')
   side_1   = Side(border_style='thin', color='000000')
   if bval == 1:
-    val_b    = Border(left=side_1, right=side_1, bottom=side_1)
+    val_b    = Border(left=side_1, right=side_1, top=side_1, bottom=side_1)
   else:
     val_b    = Border(left=None, right=None, top=None, bottom=None)
   # 書き込み
@@ -160,13 +160,13 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   if wval == 1:
     for c in range(icol,icol_max + 1):
       col_str = ws.cell(row=irow,column=c).column_letter
-      clen_val = 1.2 * min(column_str_max,max(4,clen_max[(c - icol)]))
+      clen_val = 1.1 * min(column_str_max,max(4,clen_max[(c - icol)]))
       ws.column_dimensions[col_str].width = clen_val
       #print(c,clen_val)
-  # フィルタ設定
+  # アウトライン設定
   col_max_letter = get_column_letter(icol_max)
   range_str = cadr + ":" + col_max_letter + str(irow_max)
-  ws.auto_filter.ref = range_str
+  #ws.auto_filter.ref = range_str
   print(f'Sheet: {shname} , Range: {range_str}')
   
   wb.save(filename=fxlsx)
@@ -199,7 +199,7 @@ if __name__ == '__main__':
   if arg_num <= len(args):
     if lkey in args:
       aidx = args.index(lkey)
-      lval = [int(args[aidx+1],int(args[aidx+2])
+      lval = [int(args[aidx+1]),int(args[aidx+2])]
       del args[aidx:aidx+3]
     if skey in args:
       aidx = args.index(skey)
