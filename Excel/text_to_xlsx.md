@@ -93,13 +93,13 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   lnum = len(read_txt)
   lstart,lend = line_calc(llist,lnum)
   if lstart > 0:
-    for irow in range(lstart,lend+1)
-      row = read_txt[irow-1].rstrip('\n')
+    for ir in range(lstart,lend+1)
+      row = read_txt[ir-1].rstrip('\n')
       col_max = max(col_max,len(row))
       if nval == 0:
         row_i = []
       else:
-        row_i = [irow]
+        row_i = [ir]
       row_i.append(row)
       rows.append(row_i)
       rnum = rnum + 1
@@ -107,7 +107,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   print(f'Recore: {lnum} , Import: {rnum} , Line: {lstart} - {lend}')
   # ヘッダ作成
   txt_file = pathlib.Path(ftxt)
-  fname = txt_file.name
+  file_name = txt_file.name
   print(f'File name: {fname}')
   print(f'Column width: {clen_max}')
 
@@ -127,41 +127,34 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   # Excelのフォーマット等の設定
   # Fone(name='Calibri', size=11, bold=False, italic=False, underline='none', strike=False,
   #      vertAlign=None, color='FF000000')
-  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='ff000000')
+  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='ff0000ff')
   val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='ff000000')
-  header_p = PatternFill(patternType='solid', fgColor='88ccff')
-  val_p    = PatternFill(patternType='solid', fgColor='ffffff')
   side_1   = Side(border_style='thin', color='000000')
-  side_2   = Side(border_style='double', color='000000')
   if bval == 1:
-    header_b = Border(left=side_1, right=side_1, top=side_1, bottom=side_2)
     val_b    = Border(left=side_1, right=side_1, bottom=side_1)
   else:
-    header_b = Border(left=None, right=None, top=None, bottom=None)
     val_b    = Border(left=None, right=None, top=None, bottom=None)
   # 書き込み
   irow = ws[cadr].row
   icol = ws[cadr].column
   r = irow
   c = icol
-  for val in header_list:
-    ws.cell(row=r,column=c).value=val
-    ws.cell(row=r,column=c).font=header_f
-    ws.cell(row=r,column=c).fill=header_p
-    ws.cell(row=r,column=c).border=header_b
-    c = c + 1
+  # file name
+  ws.cell(row=r,column=c).value=file_name
+  ws.cell(row=r,column=c).font=header_f
+  r = r + 1
+  # file line
   for row in rows:
-    r = r + 1
     c = icol
     for val in row:
       ws.cell(row=r,column=c).value=val
       ws.cell(row=r,column=c).font=val_f
-      #ws.cell(row=r,column=c).fill=val_p
       ws.cell(row=r,column=c).border=val_b
       c = c + 1
-  irow_max = r
-  icol_max = icol + cnum_max - 1
-  #print(f'Row: {irow} , {irow_max} Col: {icol} , {icol_max}')
+    r = r + 1
+  irow_max = r - 1
+  icol_max = icol + nval
+  print(f'Row: {irow} , {irow_max} Col: {icol} , {icol_max}')
    
   # セル幅設定
   if wval == 1:
@@ -179,7 +172,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   wb.save(filename=fxlsx)
   wb.close()
   
-  return(rnum,cnum_max)
+  return(lnum,rnum)
 
 if __name__ == '__main__':
   args = sys.argv
