@@ -43,6 +43,34 @@ def print_usage(arg0):
   print(f'  {arg0}  input_txt  output_xlsx [-l start end] [-n] [-b] [-w] [-s sheet_name] [-c cell_address]')
   return()
 
+def line_calc(llist,lnum)
+  # Start
+  if llist[0] == 0:
+    lstart = 1
+  elif llist[0] > 0 and llist[0] <= lnum:
+    lstart = llist[0]
+  elif llist[0] > lnum:
+    lstart = 0
+  elif llist[0] > 0 - lnum:
+    lstart = lnum - llist[0]
+  else:
+    lstart = 1
+  # End
+  if llist[1] == 0:
+    lend = lnum
+  elif llist[1] > 0 and llist[0] <= lnum:
+    lend = llist[1]
+  elif llist[1] > lnum:
+    lend = lnum
+  elif llist[1] > 0 - lnum
+    lend = lnum - llist[0]    
+  else:
+    lend = 0
+  if lstart == 0 or lend == 0 or lstart > lend:
+    lstart = 0
+    lend = 0
+  return lstart,lend
+
 def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   print(ftxt,fxlsx,shname)
   print(sys.getfilesystemencoding())
@@ -56,59 +84,31 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
   column_str_max = 132
   rows = []
   rnum = 0
-  clen_max = []
+  clen_max = [0,0]
+  col_max = 0
   # 日本語の処理が不要ならば open(fcsv, 'r') でよい
   with open(ftxt, 'r', encoding='utf-8') as f: 
     read_txt = f.readlines()
-    for row in range(hval):
-      row0 = next(read_csv)
-    # テキストデータ読込み（行番号付加,最大文字数取得）
-    for row in read_csv:
-      col_len = [len(vstr) for vstr in row]
-      if vval == 0:
-        row_num = row
-      else:
-        row_num = [str_to_num(vstr) for vstr in row]
+  # テキストデータ読込み（行番号付加,最大文字数取得）
+  lnum = len(read_txt)
+  lstart,lend = line_calc(llist,lnum)
+  if lstart > 0:
+    for irow in range(lstart,lend+1)
+      row = read_txt[irow-1].rstrip('\n')
+      col_max = max(col_max,len(row))
       if nval == 0:
         row_i = []
-        col_length = []
       else:
-        row_i = [rnum + 1]
-        col_length = [len(str(rnum+1))]
-      row_i.extend(row_num)
+        row_i = [irow]
+      row_i.append(row)
       rows.append(row_i)
-      col_length.extend(col_len)
-      for col_i in range(0,len(col_length)):
-        if col_i < len(clen_max):
-          clen_max[col_i] = max(clen_max[col_i],col_length[col_i])
-        else:
-          clen_max.append(col_length[col_i])
-      cnum_max = max(len(row_i),cnum_max)
       rnum = rnum + 1
-  print(f'Recore: {rnum} , Field: {cnum_max}')
-
+    clen_max = [len(str(lend)),col_max]
+  print(f'Recore: {lnum} , Import: {rnum} , Line: {lstart} - {lend}')
   # ヘッダ作成
-  if nval == 0:
-    cnum_add = 0
-    header_list = []
-  else:
-    cnum_add = 1
-    header_list = ["No."]
-  cnum = 0 + cnum_add
-  if (hval == 0) or (len(hlist) > 0) :
-    for col in hlist:
-      cnum = cnum + 1
-      header_list.append(col)
-  else:
-    for col in row0:
-      cnum = cnum + 1
-      header_list.append(col)
-  # headerの数が不足していた時の処置
-  if cnum < cnum_max:
-    for col in range(cnum, cnum_max):
-      header_list.append( "col_" + str(col+1-cnum_add) )
-
-  print(f'Header: {header_list}')
+  txt_file = pathlib.Path(ftxt)
+  fname = txt_file.name
+  print(f'File name: {fname}')
   print(f'Column width: {clen_max}')
 
   # Excelのブックを開く
@@ -183,40 +183,31 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,llist):
 
 if __name__ == '__main__':
   args = sys.argv
-  hkey = '-h'
-  dkey = '-t'
+  lkey = '-l'
   skey = '-s'
   ckey = '-c'
   nkey = '-n'
-  vkey = '-v'
   bkey = '-b'
   wkey = '-w'
-  hval = 1
-  dval = ','
+  lval = [0,0]
   shname = 'Sheet1'
   cval = 'A1'
   nval = 0
-  vval = 0
   bval = 0
   wval = 0
   
   arg_num = 3
-  arg_num = (arg_num + 2) if hkey in args else arg_num
-  arg_num = (arg_num + 1) if dkey in args else arg_num
+  arg_num = (arg_num + 3) if lkey in args else arg_num
   arg_num = (arg_num + 2) if skey in args else arg_num
   arg_num = (arg_num + 2) if ckey in args else arg_num
   arg_num = (arg_num + 1) if nkey in args else arg_num
-  arg_num = (arg_num + 1) if vkey in args else arg_num
   arg_num = (arg_num + 1) if bkey in args else arg_num
+  arg_num = (arg_num + 1) if wkey in args else arg_num
   if arg_num <= len(args):
-    if hkey in args:
-      aidx = args.index(hkey)
-      hval = int(args[aidx+1])
-      del args[aidx:aidx+2]
-    if dkey in args:
-      aidx = args.index(dkey)
-      dval = '\t'
-      del args[aidx]
+    if lkey in args:
+      aidx = args.index(lkey)
+      lval = [int(args[aidx+1],int(args[aidx+2])
+      del args[aidx:aidx+3]
     if skey in args:
       aidx = args.index(skey)
       shname = args[aidx+1]
@@ -229,10 +220,6 @@ if __name__ == '__main__':
       aidx = args.index(nkey)
       nval = 1
       del args[aidx]
-    if vkey in args:
-      aidx = args.index(vkey)
-      vval = 1
-      del args[aidx]
     if bkey in args:
       aidx = args.index(bkey)
       bval = 1
@@ -242,16 +229,11 @@ if __name__ == '__main__':
       wval = 1
       del args[aidx]
     if os.path.isfile(args[1]):
-      #シート名をCSVファイル名から取得(-s 指定が無かった時)
+      #シート名をテキストファイル名から取得(-s 指定が無かった時)
       if shname == 'Sheet1' :
-        csv_file = pathlib.Path(args[1])
-        shname = csv_file.stem
-      #カラムヘッダを取得（指定されていた場合のみ）
-      hlist = []
-      if 4 <= len(args):
-        for i in range( 3, len(args) ):
-          hlist.append(args[i])
-      csv_to_xlsx(args[1], args[2], shname, cval, dval, nval, vval, bval, wval, hval, hlist)
+        txt_file = pathlib.Path(args[1])
+        shname = txt_file.stem
+      text_to_xlsx(args[1], args[2], shname, cval, nval, bval, wval, lval)
     else:
       print(f'File {args[1]} Not Found!')
   else:
