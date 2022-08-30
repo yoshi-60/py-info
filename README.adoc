@@ -28,6 +28,7 @@ updated at 2022/8/28
 * link:./SQLite/sql_cp.md[【Python】SQLiteで別ファイルにテーブルのコピーを作成する]
 * link:./SQLite/sql_to_csv.md[【Python】SQLiteからCSVファイルに出力する]
 * link:./SQLite/sql_modify.md[【Python】複数のSQLiteファイルの操作結果を別のSQLiteファイルに出力する]
+* link:./Excel/text_to_xlsx.md[【Python】テキストファイルをExcelにインポートする]
 * link:./Excel/csv_to_xlsx.md[【Python】CSVファイルをExcelにインポートする]
 
 == References
