@@ -22,10 +22,10 @@ updated at 2022/8/30
 
 ```Shell
 # オプション無し
-python3 input.txt output.xlsx
+python3 text_to_xlsx.py  input.txt  output.xlsx
 
 # オプション設定有り
-python3  input.txt  output_xlsx -h 1 0 -l 10 -20 -n -b -w -g -s sheet_name -c B3
+python3 text_to_xlsx.py  input.txt  output_xlsx -h 1 0 -l 10 -20 -n -b -w -g -s sheet_name -c B3
 ```
 
 ## Pythonのコード
