@@ -22,10 +22,10 @@ CSVファイルを Excel(xlsx)のシートに読み込む。
 
 ```Shell
 # オプション無し
-python3 input.csv output.xlsx
+python3 csv_to_xlsx.py input.csv output.xlsx
 
 # オプション設定有り
-python3 input.csv -n -v -b -w output_xlsx -s sheet_name -c B2 
+python3 csv_to_xlsx.py input.csv -n -v -b -w output_xlsx -s sheet_name -c B2 
 ```
 
 ## Pythonのコード
