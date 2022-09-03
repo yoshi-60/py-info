@@ -10,13 +10,14 @@ CSVファイルを Excel(xlsx)のシートに読み込む。
 4. CSVファイルの読み込み開始行を指定できるようにする。（-h オプション）
 5. CSVファイルのデータの行番号Excelデータに追加できるようにする（-n オプション）。
 6. CSVファイルのデータを可能ならば数値に変換できるようにする。（-v オプション）。
-7. Excelファイルおよびシートが存在しない場合は新規作成、存在する場合は追記する。
-8. Excelファイルのシート名はCSVファイルのファイル名(拡張子を除く)とする。
-9. Excelファイルのシート名を指定できるようにする。（-s オプション）
-10. Excelのシートへの開始セル位置を指定できるようにする（-c オプション）
-11. Excelのシートへの挿入部分に罫線を付加できるようにする。（-b オプション）
-11. Excelのシートへの挿入部分のセルの列幅を自動設定できるようにする。（-w オプション）
-12. TSVファイルの読み込みにも対応する。（-t オプション）
+7. CSVファイルのデータの変換方法をカラム毎に設定できるようにする。（-d オプション）。
+8. Excelファイルおよびシートが存在しない場合は新規作成、存在する場合は追記する。
+9. Excelファイルのシート名はCSVファイルのファイル名(拡張子を除く)とする。
+10. Excelファイルのシート名を指定できるようにする。（-s オプション）
+11. Excelのシートへの開始セル位置を指定できるようにする（-c オプション）
+12. Excelのシートへの挿入部分に罫線を付加できるようにする。（-b オプション）
+13. Excelのシートへの挿入部分のセルの列幅を自動設定できるようにする。（-w オプション）
+14. TSVファイルの読み込みにも対応する。（-t オプション）
 
 ### 実行例
 
@@ -25,14 +26,16 @@ CSVファイルを Excel(xlsx)のシートに読み込む。
 python3 csv_to_xlsx.py input.csv output.xlsx
 
 # オプション設定有り
-python3 csv_to_xlsx.py input.csv -n -v -b -w output_xlsx -s sheet_name -c B2 
+python3 csv_to_xlsx.py input.csv output_xlsx -s sheet_name -C B2 -n -v -w -b
+
+# オプション設定有り
+python3 csv_to_xlsx.py input.csv output_xlsx -s sheet_name -c D3 -h 0 -d ISRDV -w 
 ```
 
 ## Pythonのコード
 
 ```Python
 #!/usr/bin/env python3
-#
 import sys
 import os
 import pathlib
@@ -59,12 +62,7 @@ def str_to_num(vstr):
       try:
         tval = datetime.fromisoformat(vstr)
       except ValueError:
-        try:
-          tval = datetime.strptime(vstr, '%Y/%m/%d')
-        except ValueError:
-          return vstr
-        else:
-          return tval
+        return vstr
       else:
         return tval
     else:
@@ -72,11 +70,78 @@ def str_to_num(vstr):
   else:
     return ival
 
-def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,bval,wval,hval,hlist):
+def str_to_int(vstr):
+  try:
+    ival = int(vstr, 10)
+  except ValueError:
+    try:
+      fval = float(vstr)
+    except ValueError:
+      return vstr
+    else:
+      return int(fval)
+  else:
+    return ival
+
+def str_to_float(vstr):
+  try:
+    fval = float(vstr)
+  except ValueError:
+    return vstr
+  else:
+    return fval
+
+def str_to_date(vstr):
+  try:
+    tval = datetime.fromisoformat(vstr)
+  except ValueError:
+    tstr = vstr.replace('-','/')
+    try:
+      tval = datetime.strptime(tstr, '%Y/%m/%d')
+    except ValueError:
+      try:
+        tval = datetime.strptime(tstr, '%Y/%m/%d %H:%M:%S')
+      except ValueError:
+        try:
+          tval = datetime.strptime(tstr, '%Y/%m/%d %H:%M')
+        except ValueError:
+          try:
+            tval = datetime.strptime(tstr, '%y/%m/%d %H:%M')
+          except ValueError:
+            #print(f'str_to_date Error {vstr}')
+            return vstr
+          else:
+            #print(f'strptime(%y/%m/%d %H:%M) {vstr}')
+            return tval
+        else:
+          #print(f'strptime(%Y/%m/%d %H:%M) {vstr}')
+          return tval
+      else:
+        #print(f'strptime(%Y/%m/%d %H:%M:%S) {vstr}')
+        return tval
+    else:
+      #print(f'strptime(%Y/%m/%d) {vstr}')
+      return tval
+  else:
+    #print(f'fromisoformat(vstr) {vstr}')
+    return tval
+
+def str_to_data(dtyp, vstr):
+  if dtyp == 'V':
+    return str_to_num(vstr)
+  elif dtyp == 'I':
+    return str_to_int(vstr)
+  elif dtyp == 'R':
+    return str_to_float(vstr)
+  elif dtyp == 'D':
+    return str_to_date(vstr)
+  else:
+    return vstr
+
+def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,bval,wval,hval,hlist,tstr):
   print(fcsv,fxlsx,shname)
   print(sys.getfilesystemencoding())
   # csvデータを2次元配列 rowsに読み込む
-  #   vval = 1 でcsvデータを数値に変換（可能な場合のみ）
   #   nval = 1 でcsvデータに行番号を追加
   #   hvalで指定された行数をheader行としてそれ以降を読み込む
   #   hval = 0 はcsvデータにheader行が無いもの（すべてデータ行）とする
@@ -85,6 +150,7 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,bval,wval,hval,hlist):
   #   cadr 書き込み位置を指定する（A1形式）
   #   bval = 1 で罫線設定
   #   wval = 1 でセル幅自動設定
+  #   tstr : CSVのデータを変換する型を文字で指定 S:Text, I:Integer, R:Real, D:Date, V:自動変換
   column_str_max = 64
   rows = []
   rnum = 0
@@ -92,17 +158,14 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,bval,wval,hval,hlist):
   clen_max = []
   # 日本語の処理が不要ならば open(fcsv, 'r') でよい
   with open(fcsv, 'r', encoding='utf-8') as f: 
-    # RFC4180に従えば "," の後のスペースはデータの一部であるが、ここではデータと見做さない
     read_csv = csv.reader(f, delimiter=dval, skipinitialspace=True)
     for row in range(hval):
       row0 = next(read_csv)
     # CSVデータ読込み（行番号付加,最大文字数取得）
     for row in read_csv:
       col_len = [len(vstr) for vstr in row]
-      if vval == 0:
-        row_num = row
-      else:
-        row_num = [str_to_num(vstr) for vstr in row]
+      # tstrの文字によって データを文字列から変換
+      row_num = [str_to_data(tstr[i],vstr) for i, vstr in enumerate(row)]
       if nval == 0:
         row_i = []
         col_length = []
@@ -222,17 +285,19 @@ if __name__ == '__main__':
   skey = '-s'
   ckey = '-c'
   nkey = '-n'
-  vkey = '-v'
   bkey = '-b'
   wkey = '-w'
+  tkey = '-d'
   hval = 1
   dval = ','
   shname = 'Sheet1'
   cval = 'A1'
   nval = 0
-  vval = 0
   bval = 0
   wval = 0
+  slis = ['S' for x in range(255)]
+  vlis = ['V' for x in range(255)]
+  tval = "".join(slis)
   
   arg_num = 3
   arg_num = (arg_num + 2) if hkey in args else arg_num
@@ -240,8 +305,8 @@ if __name__ == '__main__':
   arg_num = (arg_num + 2) if skey in args else arg_num
   arg_num = (arg_num + 2) if ckey in args else arg_num
   arg_num = (arg_num + 1) if nkey in args else arg_num
-  arg_num = (arg_num + 1) if vkey in args else arg_num
   arg_num = (arg_num + 1) if bkey in args else arg_num
+  arg_num = (arg_num + 2) if tkey in args else arg_num
   if arg_num <= len(args):
     if hkey in args:
       aidx = args.index(hkey)
@@ -263,10 +328,6 @@ if __name__ == '__main__':
       aidx = args.index(nkey)
       nval = 1
       del args[aidx]
-    if vkey in args:
-      aidx = args.index(vkey)
-      vval = 1
-      del args[aidx]
     if bkey in args:
       aidx = args.index(bkey)
       bval = 1
@@ -275,6 +336,10 @@ if __name__ == '__main__':
       aidx = args.index(wkey)
       wval = 1
       del args[aidx]
+    if tkey in args:
+      aidx = args.index(tkey)
+      tval = args[aidx+1].upper() + tval
+      del args[aidx:aidx+2]
     if os.path.isfile(args[1]):
       #シート名をCSVファイル名から取得(-s 指定が無かった時)
       if shname == 'Sheet1' :
@@ -285,7 +350,7 @@ if __name__ == '__main__':
       if 4 <= len(args):
         for i in range( 3, len(args) ):
           hlist.append(args[i])
-      csv_to_xlsx(args[1], args[2], shname, cval, dval, nval, vval, bval, wval, hval, hlist)
+      csv_to_xlsx(args[1], args[2], shname, cval, dval, nval, bval, wval, hval, hlist, tval)
     else:
       print(f'File {args[1]} Not Found!')
   else:
