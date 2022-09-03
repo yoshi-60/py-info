@@ -32,10 +32,12 @@ python3 csv_to_xlsx.py input.csv -n -v -b -w output_xlsx -s sheet_name -c B2
 
 ```Python
 #!/usr/bin/env python3
+#
 import sys
 import os
 import pathlib
 import csv
+from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -54,7 +56,17 @@ def str_to_num(vstr):
     try:
       fval = float(vstr)
     except ValueError:
-      return vstr
+      try:
+        tval = datetime.fromisoformat(vstr)
+      except ValueError:
+        try:
+          tval = datetime.strptime(vstr, '%Y/%m/%d')
+        except ValueError:
+          return vstr
+        else:
+          return tval
+      else:
+        return tval
     else:
       return fval
   else:
@@ -80,7 +92,8 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,bval,wval,hval,hlist):
   clen_max = []
   # 日本語の処理が不要ならば open(fcsv, 'r') でよい
   with open(fcsv, 'r', encoding='utf-8') as f: 
-    read_csv = csv.reader(f, delimiter=dval)
+    # RFC4180に従えば "," の後のスペースはデータの一部であるが、ここではデータと見做さない
+    read_csv = csv.reader(f, delimiter=dval, skipinitialspace=True)
     for row in range(hval):
       row0 = next(read_csv)
     # CSVデータ読込み（行番号付加,最大文字数取得）
@@ -146,10 +159,10 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,dval,nval,vval,bval,wval,hval,hlist):
     ws = wb.create_sheet(shname)
   
   # Excelのフォーマット等の設定
-  # Fone(name='Calibri', size=11, bold=False, italic=False, underline='none', strike=False,
-  #      vertAlign=None, color='FF000000')
-  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='ff000000')
-  val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='ff000000')
+  ws.sheet_properties.outlinePr.summaryBelow = False
+  ws.sheet_properties.outlinePr.summaryRight = False
+  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='000000')
+  val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='000000')
   header_p = PatternFill(patternType='solid', fgColor='88ccff')
   val_p    = PatternFill(patternType='solid', fgColor='ffffff')
   side_1   = Side(border_style='thin', color='000000')
@@ -281,6 +294,7 @@ if __name__ == '__main__':
 
 ## References
 
+* [csv RFC4180 (IETF Tools)](https://tools.ietf.org/pdf/rfc4180.pdf)
 * [csv (docs.python.org)](https://docs.python.org/ja/3/library/csv.html)
 * [pathlib (docs.python.org)](https://docs.python.org/ja/3/library/pathlib.html))
 * [openpyxl Workbook (https://openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html#module-openpyxl.workbook.workbook)
