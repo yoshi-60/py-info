@@ -39,7 +39,7 @@ wb.save(wb_name)
 
 ```Python
 from openpyxl import load_workbook
-from openpyxl.styles import PatternFill
+from openpyxl.utils.cell import range_boundaries, get_column_letter
 
 wb_name = '/home/username/sample.xlsx'
 ws_name = 'Sheet1'
@@ -52,8 +52,13 @@ wb = load_workbook('/home/username/sample.xlsx')
 ws = wb[ws_name]
 
 # セル幅設定
+cell_boudary = range_boundaries(cell_range)
+for c in range(cell_boudary[1],cell_boudary[3]+1)
+  ws.column_dimensions[get_col_letter(c)].width = 12
 
 # セル高設定
+for r in range(cell_boudary[0],cell_boudary[2]+1)
+  ws.row_dimensions[r].height = 28
 
 # 保存する
 wb.save(wb_name)
@@ -120,6 +125,7 @@ wb.save(wb_name)
  
 ## References
 
+* [utils.cell (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.utils.cell.html)
 * [Font (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.styles.fonts.html#openpyxl.styles.fonts.Font)
 * [PatternFill (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.styles.fills.html#openpyxl.styles.fills.PatternFill)
 * [Side (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.styles.borders.html#openpyxl.styles.borders.Side)
