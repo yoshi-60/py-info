@@ -53,11 +53,11 @@ ws = wb[ws_name]
 
 # セル幅設定
 cell_boudary = range_boundaries(cell_range)
-for c in range(cell_boudary[1],cell_boudary[3]+1)
+for c in range(cell_boudary[1],cell_boudary[3]+1):
   ws.column_dimensions[get_col_letter(c)].width = 12
 
 # セル高設定
-for r in range(cell_boudary[0],cell_boudary[2]+1)
+for r in range(cell_boudary[0],cell_boudary[2]+1):
   ws.row_dimensions[r].height = 28
 
 # 保存する
