@@ -1,0 +1,137 @@
+# Sample Parameter for Excel Formatter
+reader:
+  - filename: 'input.txt'
+    text:
+      number: True
+    sheet:
+      name: 'input.txt'
+      coordinate: B3
+      outline:
+        summaryBelow: False
+        summaryRight: False
+        row:
+          level: 1
+          hidden: True    
+  - filename: 'input.csv'
+    csv:
+      header: 1
+      number: True
+      newline: ''
+      delimiter: ','
+      quotechar: '"'
+      quoting: QUOTE_MINIMAL
+      skipinitialspace: True
+    sheet:
+      name: 'input.csv'
+      coordinate: B2
+      filter: True
+      header:
+        value: ['col1','col2','col3']
+        font:
+          name: "BIZ UDPGothic"
+          size: 10.5
+        fill:
+          patternType: 'solid'
+          fgColor: 'ff0000'
+        border:
+          top:
+            style: 'thick'
+            color: '000000'
+          bottom:
+            style: 'thick'
+            color: '000000'
+          left:
+          right:
+          vertical:
+      body:
+        font:
+          name: "BIZ UDPGothic"
+          size: 10.5
+        border:
+          top:
+            style: 'thick'
+            color: '000000'
+          bottom:
+            style: 'thick'
+            color: '000000'
+          horizontal:
+            style: 'thick'
+            color: '000000'
+          left:
+          right:
+          vertical:
+sheets:
+  - name: 'Sheet1'
+    cells:
+      - range: 'B2:D5'
+        font:
+          name: "BIZ UDPGothic"
+          size: 10.5
+          color: '0000ff'
+          strike: False
+          bold: True
+          italic: False
+          underline: 'single'
+        fill:
+          patternType: 'solid'
+          fgColor: 'ff0000'
+          bgColor: 'ff0000'
+        border:
+          top:
+            style: 'thick'
+            color: '000000'
+          bottom:
+            style: 'thick'
+            color: '000000'
+          left:
+          right:
+        alignment:
+          horizontal: 'center'
+          vertical: 'top'
+          textRotation: 90
+          shrinkToFit: False
+          wrapText: True
+        protection:
+          locked: True
+          hidden: False
+        height: 12.0
+        width: 8.0
+        number_format: '#,##0'
+        filter:
+          column:
+            id: 0
+            val: {}
+            blank: False
+          sort:
+            descending: False
+        outline:
+          summaryBelow: False
+          summaryRight: False
+          applyStyles:
+          showOutlineSymbols:
+          row:
+            level: 1
+            hidden: True
+          column:
+            level: 1
+            hidden: True
+      - range: B4:E12
+        merge: True
+        border:
+          diagonal:
+            style: 'thick'
+            color: '000000'
+            diagonalUp: True
+  - name: Sheet2
+    cells:
+      - range: A1:A1
+        height: 24.0
+        width: 16.0
+        font:
+          name: "BIZ UDPGothic"
+      - range: B2:E5
+        value:
+          - ["num","col1","col2","col3"]
+          - [1,"row1",101,3.2E+06]
+          - [2,"row2",-102,4.0E-03]
+          - [3,"row3",103,-0.123E+12]
