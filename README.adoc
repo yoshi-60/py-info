@@ -3,13 +3,13 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2022/8/28
+updated at 2022/9/07
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
 
-| 3.10 | 3.10.6 |  Aug. 2, 2022 | link:https://www.python.org/downloads/release/python-3106/[Download] | 2026-10
-| 3.9 | 3.9.13 |  May 17, 2022 | link:https://www.python.org/downloads/release/python-3913/[Download] | 2025-10
+| 3.10 | 3.10.7 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3107/[Download] | 2026-10
+| 3.9 | 3.9.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3914/[Download] | 2025-10
 | 3.8 | 3.8.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3813/[Download] | 2024-10
 | 3.7 | 3.7.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3713/[Download] | 2023-06-27
 | 3.6 | 3.6.15 |  Sept. 4, 2021 | link:https://www.python.org/downloads/release/python-3615/[Download] | 2021-12-23
