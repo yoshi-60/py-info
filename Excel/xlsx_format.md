@@ -130,4 +130,4 @@ wb.save(wb_name)
 * [PatternFill (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.styles.fills.html#openpyxl.styles.fills.PatternFill)
 * [Side (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.styles.borders.html#openpyxl.styles.borders.Side)
 * [Border (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.styles.borders.html#openpyxl.styles.borders.Border)
-* 
+* [YAML Ain’t Markup Language (YAML™) version 1.2 (yaml.org)](https://yaml.org/spec/1.2.2/)
