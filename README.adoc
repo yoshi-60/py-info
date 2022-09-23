@@ -30,7 +30,7 @@ updated at 2022/9/
 * link:./SQLite/sql_modify.md[【Python】複数のSQLiteファイルの操作結果を別のSQLiteファイルに出力する]
 * link:./Excel/text_to_xlsx.md[【Python】テキストファイルをExcelにインポートする]
 * link:./Excel/csv_to_xlsx.md[【Python】CSVファイルをExcelにインポートする]
-* link:./Python/Wave_Gen.md[【Python】Sin波を生成してCSVファイルに出力する]
+* link:./Python3/Wave_Gen.md[【Python】Sin波を生成してCSVファイルに出力する]
 
 == References
 
