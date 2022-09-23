@@ -1,4 +1,4 @@
-# 【Python】Sin波を生成してSVファイルに出力する
+# 【Python】Sin波を生成してCSVファイルに出力する
 updated at 2022/9/23
 
 ## 実行内容
@@ -93,6 +93,38 @@ if __name__ == '__main__':
   else:
     print(f'Usage:')
     print(f'  {args[0]} input_yaml')
+```
+
+### 画面出力
+
+```Shell
+$ gen_wave.py gen_square.yml
+Input_Yaml: gen_square.yml
+Output_Wave: wave_square.csv
+Output_DSM: None
+Sample Freq.: 1000000.0 , Delta_time: 1e-06 , Range: 0.0 , 0.003333 , Count: 3334
+wave 0 : sin , freq.: 300.0 , offset: 0.4 , amplitude: 0.4
+wave 1 : sin , freq.: 900.0 , offset: 0.133333 , amplitude: 0.133333
+wave 2 : sin , freq.: 1500.0 , offset: 0.08 , amplitude: 0.08
+wave 3 : sin , freq.: 2100.0 , offset: 0.057142857 , amplitude: 0.057142857
+wave 4 : sin , freq.: 2700.0 , offset: 0.0444444 , amplitude: 0.0444444
+Wave_max: 1.0863593349859093 , min: 0.34348245807719496
+```
+
+<img width="480" alt="square_wave" src="https://user-images.githubusercontent.com/49278963/191878043-ea33b749-d1f5-41fc-850b-4b942eb6e44f.png">
+
+```Shell
+$ head wave_square.csv
+Time,Wave
+0.0,0.7149202570000001
+1e-06,0.7186900918733848
+2e-06,0.7224594847445748
+3e-06,0.726227993703401
+4e-06,0.7299951770237249
+4.9999999999999996e-06,0.7337605932553961
+6e-06,0.7375238013161444
+7e-06,0.74128436058338
+8e-06,0.7450418309858837
 ```
 
 ### Yamlファイル
