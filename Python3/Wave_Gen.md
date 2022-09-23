@@ -49,12 +49,13 @@ def gen_wave(fyml):
   wave_amp= []
   wave_offset= []
   wave_freq= []
+  rng = np.random.default_rng()
 
   for i,j in enumerate(config['waves']) :
     wave_func.append(j['function'])
     wave_offset.append(float(j['offset']))
     wave_amp.append(float(j['amplitude']))
-    wave_freq.append(float(j['frequency']))
+    wave_freq.append(float(j.get('frequency',0.0)))
     print(f'wave {i} : {wave_func[i]} , freq.: {wave_freq[i]} , offset: {wave_offset[i]} , amplitude: {wave_amp[i]}')
   
 　# 波形の生成（Numpy使用）
@@ -65,6 +66,8 @@ def gen_wave(fyml):
       y = wave_amp[i] * np.sin(2*np.pi*x*wave_freq[i]) + wave_offset[i]
     elif j == 'cos':
       y = wave_amp[i] * np.cos(2*np.pi*x*wave_freq[i]) + wave_offset[i]
+    elif j == 'random':
+      y = wave_amp[i] * rng.standard_normal(sample_num) + wave_offset[i]
     else:
       y = np.zeros_like(x)
     w = w + y
@@ -136,6 +139,7 @@ clock:
   samples: 3334
   start: 0.0
 waves:
+  # function 'sin' / 'cos' / 'random' (mean=0 sigma=1)
   - function: "sin"
     offset: 0.4
     amplitude: 0.4
