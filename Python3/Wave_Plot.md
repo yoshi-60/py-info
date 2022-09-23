@@ -10,6 +10,7 @@ CSVファイルをグラフ出力する。
 #!/usr/bin/env python3
 import sys
 import os
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -36,6 +37,19 @@ def plt_wave(fcsv):
   df.plot(x=col_names[0], y=col_names[1], title=f_name, grid=True, legend=False)
   plt.xlabel(col_names[0])
   plt.ylabel(col_names[1])
+  plt.show()
+
+  # Numpy fft
+  x = df.iloc[:,1].to_numpy()
+  F = np.fft.fft(x)
+  freq = np.fft.fftfreq(sample_num, d=dt)
+  F = F / (sample_num / 2)
+  Amp = np.abs(F)
+  plt.plot(freq[:sample_num//2],Amp[:sample_num//2])
+  plt.title(f_name)
+  plt.xlabel('Frequency')
+  plt.ylabel('Amplitude')
+  plt.grid(axis='both')
   plt.show()
 
 if __name__ == '__main__':
