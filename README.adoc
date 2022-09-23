@@ -3,15 +3,15 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2022/9/07
+updated at 2022/9/
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
 
 | 3.10 | 3.10.7 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3107/[Download] | 2026-10
 | 3.9 | 3.9.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3914/[Download] | 2025-10
-| 3.8 | 3.8.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3813/[Download] | 2024-10
-| 3.7 | 3.7.13 |  March 16, 2022 | link:https://www.python.org/downloads/release/python-3713/[Download] | 2023-06-27
+| 3.8 | 3.8.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3814/[Download] | 2024-10
+| 3.7 | 3.7.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3714/[Download] | 2023-06-27
 | 3.6 | 3.6.15 |  Sept. 4, 2021 | link:https://www.python.org/downloads/release/python-3615/[Download] | 2021-12-23
 | 3.5 | 3.5.10 |  Sept. 5, 2020 | link:https://www.python.org/downloads/release/python-3510/[Download] | 2020-09-13
 | 2.7 | 2.7.18 |  April 20, 2020 | link:https://www.python.org/downloads/release/python-2718/[Download] | 2020-01-01
@@ -30,6 +30,7 @@ updated at 2022/9/07
 * link:./SQLite/sql_modify.md[【Python】複数のSQLiteファイルの操作結果を別のSQLiteファイルに出力する]
 * link:./Excel/text_to_xlsx.md[【Python】テキストファイルをExcelにインポートする]
 * link:./Excel/csv_to_xlsx.md[【Python】CSVファイルをExcelにインポートする]
+* link:./Python/Wave_Gen.md[【Python】Sin波を生成してCSVファイルに出力する]
 
 == References
 
