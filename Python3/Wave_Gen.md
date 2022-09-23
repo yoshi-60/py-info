@@ -86,7 +86,7 @@ def gen_wave(fyml):
     df.plot(x='Time', y='Wave')
     plt.show()
 
-  # 波形の画面出力
+  # ⊿Σ変調
   if dsm_file is not None:
     dsm_order = config['delta-sigma'].get('order',1)
     vrefh = config['delta-sigma'].get('vrefh',1.0)
