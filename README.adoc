@@ -3,7 +3,7 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2022/9/
+updated at 2022/9/23
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
