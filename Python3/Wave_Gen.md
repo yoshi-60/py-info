@@ -1,5 +1,5 @@
 # 【Python】Sin波を生成してCSVファイルに出力する
-updated at 2022/9/23
+updated at 2022/9/24
 
 ## 実行内容
 Sin波の時刻と振幅を記載したCSVファイルを出力する。
