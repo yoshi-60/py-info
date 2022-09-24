@@ -18,6 +18,7 @@ import os
 import yaml
 import numpy as np
 import pandas as pd
+# from user_function import *
 
 def gen_wave(fyml):
   print(f'Input_Yaml: {fyml}')
@@ -49,6 +50,8 @@ def gen_wave(fyml):
   wave_amp= []
   wave_offset= []
   wave_freq= []
+  wave_user1= []
+  wave_user2= []
   rng = np.random.default_rng()
 
   for i,j in enumerate(config['waves']) :
@@ -56,7 +59,14 @@ def gen_wave(fyml):
     wave_offset.append(float(j['offset']))
     wave_amp.append(float(j['amplitude']))
     wave_freq.append(float(j.get('frequency',0.0)))
-    print(f'wave {i} : {wave_func[i]} , freq.: {wave_freq[i]} , offset: {wave_offset[i]} , amplitude: {wave_amp[i]}')
+    wave_user1.append(j.get('parameter1'))
+    wave_user2.append(j.get('parameter2'))
+    if wave_func[i] == 'user_function' :      
+      print(f'wave {i} : {wave_func[i]} , freq.: {wave_freq[i]} , offset: {wave_offset[i]} , \
+      amplitude: {wave_amp[i]} , parameter1: {wave_user1[i]} , parameter2: {wave_user2[i]}')    
+    else:
+      print(f'wave {i} : {wave_func[i]} , freq.: {wave_freq[i]} , offset: {wave_offset[i]} , \
+      amplitude: {wave_amp[i]}')
   
   # 波形の生成（Numpy使用）
   x = np.arange(start_time, stop_arange, dt)
@@ -68,6 +78,8 @@ def gen_wave(fyml):
       y = wave_amp[i] * np.cos(2*np.pi*x*wave_freq[i]) + wave_offset[i]
     elif j == 'random':
       y = wave_amp[i] * rng.standard_normal(sample_num) + wave_offset[i]
+    elif j == 'user_function':
+      y = wave_amp[i] * user_function(2*np.pi*x*wave_freq[i],wave_user1[i],wave_user2[i]) + wave_offset[i]
     else:
       y = np.zeros_like(x)
     w = w + y
