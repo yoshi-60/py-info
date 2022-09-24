@@ -4,9 +4,29 @@ import numpy as np
 def sin_func(x):
   bin_str = "100110"
   vratio  = 0.125
-  return sin_bstr(x, bin_str, vratio)
+  if isinstance(x, np.ndarray):
+    return np_sin_bstr(x, bin_str, vratio)
+  else:
+    return sin_bstr(x, bin_str, vratio)
 
 def sin_bstr(x, bin_str, vratio):
+  blen = len(bin_str)
+  wsel = wave_select(bin_str)
+  nx = int(x / (blen * np.pi))
+  xr = x - (nx * blen * np.pi)
+  nxr = int(2 * xr / np.pi)
+  wn = wsel[nxr]
+  if wn == 3:
+    sin_bstr_val = 1.0 - vratio * (1 + np.cos(2*xr))
+  elif wn == 2:
+    sin_bstr_val = -1.0 * np.sin(xr)
+  elif wn == 1:
+    sin_bstr_val = np.sin(xr)
+  else:
+    sin_bstr_val = -1.0 + vratio * (1 + np.cos(2*xr))
+  return sin_bstr_val
+
+def np_sin_bstr(x, bin_str, vratio):
   blen = len(bin_str)
   wsel = wave_select(bin_str)
   nx = (x / (blen * np.pi)).astype('int64')
