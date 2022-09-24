@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import numpy as np
 
-def sin_func(x):
-  bin_str = "100110"
-  vratio  = 0.125
+def sin_func(x, bin_str, vratio):
+  #bin_str = "100110"
+  vratiof  = float(vratio)
   if isinstance(x, np.ndarray):
-    return np_sin_bstr(x, bin_str, vratio)
+    return np_sin_bstr(x, bin_str, vratiof)
   else:
-    return sin_bstr(x, bin_str, vratio)
+    return sin_bstr(x, bin_str, vratiof)
 
 def sin_bstr(x, bin_str, vratio):
   blen = len(bin_str)
@@ -82,7 +82,7 @@ def wave_select(bin_str):
   return slist
 
 if __name__ == '__main__':
-  #for i in range(13):
-  #  x = 0.5 * i * np.pi
-  #  y = sin_func(x)
-  #  print(f'x: {x} , sin(x): {np.sin(x)} , sin_func(x) {y}')
+  for i in range(13):
+    x = 0.5 * i * np.pi
+    y = sin_func(x, "100110", 0.125)
+    print(f'x: {x} , sin(x): {np.sin(x)} , sin_func(x) {y}')
