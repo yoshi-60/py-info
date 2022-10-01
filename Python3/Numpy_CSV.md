@@ -112,4 +112,4 @@ Time,Wave
 
 ## References
 
-* [Numpy Reference (nympy.org)](https://numpy.org/doc/stable/reference/index.html#reference)
+* [Numpy Reference (numpy.org)](https://numpy.org/doc/stable/reference/index.html#reference)
