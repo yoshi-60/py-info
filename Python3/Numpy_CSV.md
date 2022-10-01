@@ -1,8 +1,8 @@
-# 【Python】CSVファイルのデータをNumpyに読み込む
+# 【Python】CSVファイルのデータをNumpyのndarrayに読み込む
 updated at 2022/10/01
 
 ## 実行内容
-CSVファイルのデータをNumpyの ndarrayに読み込みグラフ出力する。
+CSVファイルのデータをNumpyの**ndarray**に読み込みグラフ出力する。
 
 1. ヘッダの有無, X軸データの有無を指定できるようにする。
 
@@ -22,9 +22,9 @@ def csv_to_np(fcsv, skiprow, tscale):
   else:
     pscale = ' , No X-axis'
   if skiprow == 0:
-    print(f'  No Header{pscale}')
+    print(f'No Header{pscale}')
   else :
-    print(f'  Header skip: {skiprow}{pscale}')
+    print(f'Header skip: {skiprow}{pscale}')
 
   ndin = np.loadtxt(fcsv, delimiter=',', skiprows=skiprow)
   dat_size = ndin.shape[0]
@@ -32,27 +32,34 @@ def csv_to_np(fcsv, skiprow, tscale):
   if tscale:
     ndat = ndin[:,1:]
     ntim = ndin[:,0]
+    print(f'Time_min: {ntim.min(axis=0)} , Time_max: {ntim.max(axis=0)}')
   else:
     ndat = ndin
     ntim = np.arange(0,dat_size)
-
-  print(type(ndin))
-  print(ndin.shape, ndin.dtype)
-  print(type(ndat),type(ntim))
-  print(ndat.shape, ndat.dtype)
-  print(ntim.shape, ntim.dtype)
-
+  print(f'Value_min: {ndat.min(axis=0)} , Value_max: {ndat.max(axis=0)}')
+  
+  fname = os.path.basename(fcsv)
+  plt.plot(ntim,ndat)
+  plt.title(fname)
+  plt.grid(axis='both')
+  plt.ylabel('Data_Value')
+  if tscale:
+    plt.xlabel('Time')
+  else:
+    plt.xlabel('Sample')
+  plt.show()
+  
 if __name__ == '__main__':
   args = sys.argv
   arg_num = 2
   optlist = {'-r': 2, '-x': 1}     # オプションと必要な引数の数（オプション自身も含む）
   optval  = { 'r': 1,  'x': True}  # デフォルト値
   optflag = { 'x': False}          # フラグオプションの設定値
-  
+  # 必要な引数の数を計算
   for opkey in optlist.keys():
     if opkey in args:
       arg_num = (arg_num + optlist[opkey])
-
+  # 引数の取り出しと実行
   if arg_num <= len(args):
     for opkey in optlist.keys():
       if opkey in args:
@@ -79,14 +86,15 @@ if __name__ == '__main__':
 ### 画面出力
 
 ```Shell
-$ plot_wave.py wave_square.csv
+$ csv_to_numpy.py wave_square.csv
 Input_csv: wave_square.csv
-Columns: Time , Wave
-Sample Freq.: 1000000.0 , Delta_time: 1e-06 , Range: 0.0 , 0.003333 , Count: 3334
-Wave_max: 1.0863593349859093 , min: 0.3434824580771949
+Header skip: 1
+Data size: 3334
+Time_min: 0.0 , Time_max: 0.003333
+Value_min: [0.34348246] , Value_max: [1.08635933]
 ```
 
-<img width="480" alt="square_wave" src="https://user-images.githubusercontent.com/49278963/191883247-0f4b4d37-481c-4295-b51b-966113837b66.png">
+<img width="480" alt="square_wave" src="https://user-images.githubusercontent.com/49278963/193401163-6466eea7-da7f-4fe2-9e4b-2e07491185a7.png">
 
 ```Shell
 $ head wave_square.csv
