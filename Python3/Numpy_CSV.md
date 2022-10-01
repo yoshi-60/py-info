@@ -15,9 +15,54 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-def csv_to_np(fcsv):
+def csv_to_np(fcsv, skiprow, tscale):
   print(f'Input_csv: {fcsv}')
+  if tscale:
+    pscale = ''
+  else:
+    pscale = ' , No X-axis'
+  if skiprow == 0:
+    print(f'  No Header{pscale}')
+  else :
+    print(f'  Header skip: {skiprow}{pscale}')
 
+  ndin = np.loadtxt(fcsv, delimiter=',', skiprows=skiprow)
+  
+  print(type(ndin))
+  print(ndin.shape, ndin.dtype)
+
+if __name__ == '__main__':
+  args = sys.argv
+  arg_num = 2
+  optlist = {'-r': 2, '-x': 1}     # オプションと必要な引数の数（オプション自身も含む）
+  optval  = { 'r': 1,  'x': True}  # デフォルト値
+  optflag = { 'x': False}          # フラグオプションの設定値
+  
+  for opkey in optlist.keys():
+    if opkey in args:
+      arg_num = (arg_num + optlist[opkey])
+
+  if arg_num <= len(args):
+    for opkey in optlist.keys():
+      if opkey in args:
+        aidx = args.index(opkey)
+        if optlist[opkey] == 1:
+          optval[opkey[1:]] = optflag[opkey[1:]]
+          del args[aidx]
+        elif optlist[opkey] == 2:
+          optval[opkey[1:]] = args[aidx+1]
+          del args[aidx:aidx+2]
+        else:
+          optval[opkey[1:]] = args[aidx+1:aidx+optlist[opkey]]
+          del args[aidx:aidx+optlist[opkey]]
+    if os.path.isfile(args[1]):
+      csv_to_np(args[1], int(optval['r']), optval['x'])
+    else:
+      print(f'File {args[1]} Not Found!')
+  else:
+    print(f'Usage:')
+    print(f'  {args[0]} input_csv [-r 0] [-x]')
+    print(f'             -r skiprow : 0 = No header , 1 = Header skip, -x : No X-axis data')
 ```
 
 ### 画面出力
