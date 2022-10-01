@@ -1,5 +1,5 @@
 # 【Python】Sin波を生成してCSVファイルに出力する
-updated at 2022/9/24
+updated at 2022/9/30
 
 ## 実行内容
 Sin波の時刻と振幅を記載したCSVファイルを出力する。
@@ -30,18 +30,30 @@ def gen_wave(fyml):
   clk_freq = float(config['clock']['frequency'])
   sample_num = int(config['clock']['samples'])
   start_time = float(config['clock'].get('start',0.0))
-  csv_file = config['output'].get('wavefile',"output_tmp.csv")
-  dsm_file = config['output'].get('dsmfile')
+  csv_out = config['output'].get('wave', False)
+  dsm_out = config['output'].get('dsm', False)
   plot_out = config['output'].get('plot', False)
   dt = 1/clk_freq
   stop_time= start_time+ (sample_num - 1) * dt
   stop_arange = start_time+ (sample_num - 0.5) * dt
-
-  print(f'Output_Wave: {csv_file}')
-  if dsm_file is None:
-    print(f'Output_DSM: None')
+  print(type(csv_out))
+  if type(csv_out) is dict :
+    csv_file = config['output']['wave'].get('filename',"output_tmp.csv")
+    csv_header = config['output']['wave'].get('header', True)
+    csv_xaxis  = config['output']['wave'].get('timescale', True)
+    print(f'Output_Wave: {csv_file}')
+    csv_out = True
   else:
+    print(f'Output_Wave: None')
+
+  if type(dsm_out) is dict :
+    dsm_file = config['output']['dsm'].get('filename',"dsmout_tmp.csv")
+    dsm_header = config['output']['dsm'].get('header', True)
+    dsm_xaxis  = config['output']['dsm'].get('timescale', True)
     print(f'Output_DSM: {dsm_file}')
+    dsm_out = True
+  else:
+    print(f'Output_DSM: None')
 
   print(f'Sample Freq.: {clk_freq} , Delta_time: {dt} , Range: {start_time} , {stop_time} , Count: {sample_num}') 
   
@@ -63,10 +75,10 @@ def gen_wave(fyml):
     wave_user2.append(j.get('parameter2'))
     if wave_func[i] == 'user_function' :      
       print(f'wave {i} : {wave_func[i]} , freq.: {wave_freq[i]} , offset: {wave_offset[i]} , \
-      amplitude: {wave_amp[i]} , parameter1: {wave_user1[i]} , parameter2: {wave_user2[i]}')    
+ amplitude: {wave_amp[i]} , parameter1: {wave_user1[i]} , parameter2: {wave_user2[i]}')    
     else:
       print(f'wave {i} : {wave_func[i]} , freq.: {wave_freq[i]} , offset: {wave_offset[i]} , \
-      amplitude: {wave_amp[i]}')
+ amplitude: {wave_amp[i]}')
   
   # 波形の生成（Numpy使用）
   x = np.arange(start_time, stop_arange, dt)
@@ -90,8 +102,12 @@ def gen_wave(fyml):
   
   # 波形のCSV出力（Pandas使用）
   df = pd.DataFrame(np.stack([x,w],1), columns=['Time', 'Wave'])
-  df.to_csv(csv_file, header=True, index=False)
-
+  if csv_out:
+    if csv_xaxis:
+      df.to_csv(csv_file, header=csv_header, index=False)
+    else:
+      df['Wave'].to_csv(csv_file, header=csv_header, index=False)
+    
   # 波形の画面出力
   if plot_out:
     import matplotlib.pyplot as plt
@@ -99,7 +115,7 @@ def gen_wave(fyml):
     plt.show()
 
   # ⊿Σ変調
-  if dsm_file is not None:
+  if dsm_out:
     dsm_order = config['delta-sigma'].get('order',1)
     vrefh = config['delta-sigma'].get('vrefh',1.0)
     vrefl = config['delta-sigma'].get('vrefl',0.0)
@@ -136,7 +152,10 @@ def gen_wave(fyml):
     
     # ビットストリームのCSV出力（Pandas使用）
     df2 = pd.DataFrame(np.stack([x,d],1), columns=['Time', 'Bit-stream'])
-    df2.to_csv(dsm_file, header=True, index=False)
+    if dsm_xaxis:
+      df2.to_csv(dsm_file, header=dsm_header, index=False)
+    else:
+      df2['Bit-stream'].to_csv(dsm_file, header=dsm_header, index=False)
 
     # 波形の画面出力
     if plot_out:
@@ -219,5 +238,6 @@ waves:
     frequency: 2700
 output:
   plot: True
-  wavefile: "wave_square.csv"
+  wave:
+    filename: "wave_square.csv"
 ```
