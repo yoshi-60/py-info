@@ -27,9 +27,20 @@ def csv_to_np(fcsv, skiprow, tscale):
     print(f'  Header skip: {skiprow}{pscale}')
 
   ndin = np.loadtxt(fcsv, delimiter=',', skiprows=skiprow)
-  
+  dat_size = ndin.shape[0]
+  print(f'Data size: {dat_size}')
+  if tscale:
+    ndat = ndin[:,1:]
+    ntim = ndin[:,0]
+  else:
+    ndat = ndin
+    ntim = np.arange(0,dat_size)
+
   print(type(ndin))
   print(ndin.shape, ndin.dtype)
+  print(type(ndat),type(ntim))
+  print(ndat.shape, ndat.dtype)
+  print(ntim.shape, ntim.dtype)
 
 if __name__ == '__main__':
   args = sys.argv
