@@ -109,3 +109,7 @@ Time,Wave
 7e-06,0.74128436058338
 8e-06,0.7450418309858837
 ```
+
+## References
+
+* [Numpy Reference (nympy.org)](https://numpy.org/doc/stable/reference/index.html#reference)
