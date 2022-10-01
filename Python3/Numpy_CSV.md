@@ -16,6 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def csv_to_np(fcsv, skiprow, tscale):
+  # ファイル名、オプションの表示
   print(f'Input_csv: {fcsv}')
   if tscale:
     pscale = ''
@@ -26,9 +27,12 @@ def csv_to_np(fcsv, skiprow, tscale):
   else :
     print(f'Header skip: {skiprow}{pscale}')
 
+  # CSVファイルの読み込み Numpy使用
   ndin = np.loadtxt(fcsv, delimiter=',', skiprows=skiprow)
   dat_size = ndin.shape[0]
   print(f'Data size: {dat_size}')
+  
+  # オプション設定によりndarrayを分離・生成
   if tscale:
     ndat = ndin[:,1:]
     ntim = ndin[:,0]
@@ -38,6 +42,7 @@ def csv_to_np(fcsv, skiprow, tscale):
     ntim = np.arange(0,dat_size)
   print(f'Value_min: {ndat.min(axis=0)} , Value_max: {ndat.max(axis=0)}')
   
+  # グラフ出力
   fname = os.path.basename(fcsv)
   plt.plot(ntim,ndat)
   plt.title(fname)
@@ -59,8 +64,9 @@ if __name__ == '__main__':
   for opkey in optlist.keys():
     if opkey in args:
       arg_num = (arg_num + optlist[opkey])
-  # 引数の取り出しと実行
+
   if arg_num <= len(args):
+    # 引数の取り出しと設定
     for opkey in optlist.keys():
       if opkey in args:
         aidx = args.index(opkey)
@@ -73,10 +79,13 @@ if __name__ == '__main__':
         else:
           optval[opkey[1:]] = args[aidx+1:aidx+optlist[opkey]]
           del args[aidx:aidx+optlist[opkey]]
+    # 入力ファイルのチェック
     if os.path.isfile(args[1]):
       csv_to_np(args[1], int(optval['r']), optval['x'])
     else:
+      # 入力ファイルが無かった場合のメッセージ
       print(f'File {args[1]} Not Found!')
+  # 引数不足の場合に使い方を表示
   else:
     print(f'Usage:')
     print(f'  {args[0]} input_csv [-r 0] [-x]')
