@@ -22,6 +22,54 @@ Function sin_square(x As Double, Optional du As Double = 0.5, Optional ord As In
   sin_square = 2 * du - 1 + 4 * ssum / pi
 End Function
 
+Function sin_triangle(x As Double, Optional du As Double = 0.5, Optional ord As Integer = 5) As Double
+  Dim ordcal As Integer
+  Dim ncal As Integer
+  Dim ssum As Double
+  Dim ducal As Double
+  Dim duflg As Integer
+  Dim xcal As Double
+  Dim pi As Double
+  
+  pi = 4 * Atn(1)
+  If ord < 1 Then
+    ordcal = 1
+  Else
+    ordcal = ord
+  End If
+  If du < 0 Then
+    ducal = 1
+    duflg = 0
+  ElseIf du <= 0.5 Then
+    ducal = du * 2
+    duflg = 0
+  ElseIf du < 1 Then
+    ducal = (1 - du) * 2
+    duflg = 1
+  Else
+    ducal = 1
+    duflg = 0
+  End If
+  If duflg = 0 Then
+    xcal = x - 0.5 * ducal * pi
+  Else
+    xcal = x + 0.5 * ducal * pi
+  End If
+  ssum = 0
+  For ncal = 1 To ordcal
+  '  If ncal Mod 2 = 1 Then
+  '    ssum = ssum + (Sin(ncal * 0.5 * pi) * Sin(ncal * x) / (ncal ^ 2))
+  '  End If
+    ssum = ssum + ((Sin(ncal * ducal * 0.5 * pi) / (ncal * ducal)) ^ 2) * Cos(ncal * xcal)
+  '  ssum = ssum + (Sin((ncal * du) * pi) * Cos(ncal * (x - du * pi)) / ncal)
+  Next ncal
+  If duflg = 0 Then
+    sin_triangle = 8 * ducal * ssum / (pi ^ 2) - (1 - ducal)
+  Else
+    sin_triangle = 1 - ducal - 8 * ducal * ssum / (pi ^ 2)
+  End If
+End Function
+
 Function sin_bstr(x As Double, Optional b As String = "10", Optional v As Double = 0.125) As Double
   Dim xr As Double
   Dim nx As Integer
