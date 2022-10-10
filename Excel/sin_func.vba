@@ -1,3 +1,27 @@
+Function sin_square(x As Double, Optional du As Double = 0.5, Optional ord As Integer = 5) As Double
+  Dim ordcal As Integer
+  Dim ncal As Integer
+  Dim ssum As Double
+  Dim pi As Double
+  
+  pi = 4 * Atn(1)
+  If ord < 1 Then
+    ordcal = 1
+  Else
+    ordcal = ord
+  End If
+  
+  ssum = 0
+  For ncal = 1 To ordcal
+  '  If ncal Mod 2 = 1 Then
+  '    ssum = ssum + (Sin(ncal * x) / ncal)
+  '  End If
+    ssum = ssum + (Sin((ncal * du) * pi) * Cos(ncal * (x - du * pi)) / ncal)
+  Next ncal
+  
+  sin_square = 2 * du - 1 + 4 * ssum / pi
+End Function
+
 Function sin_bstr(x As Double, Optional b As String = "10", Optional v As Double = 0.125) As Double
   Dim xr As Double
   Dim nx As Integer
