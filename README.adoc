@@ -3,15 +3,15 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2022/10/01
+updated at 2022/10/16
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
 
-| 3.10 | 3.10.7 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3107/[Download] | 2026-10
-| 3.9 | 3.9.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3914/[Download] | 2025-10
-| 3.8 | 3.8.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3814/[Download] | 2024-10
-| 3.7 | 3.7.14 |  Sept. 6, 2022 | link:https://www.python.org/downloads/release/python-3714/[Download] | 2023-06-27
+| 3.10 | 3.10.8 |  Oct. 11, 2022 | link:https://www.python.org/downloads/release/python-3108/[Download] | 2026-10
+| 3.9 | 3.9.15 |  OCt. 11, 2022 | link:https://www.python.org/downloads/release/python-3915/[Download] | 2025-10
+| 3.8 | 3.8.15 |  Oct. 11, 2022 | link:https://www.python.org/downloads/release/python-3815/[Download] | 2024-10
+| 3.7 | 3.7.15 |  Oct. 11, 2022 | link:https://www.python.org/downloads/release/python-3715/[Download] | 2023-06-27
 | 3.6 | 3.6.15 |  Sept. 4, 2021 | link:https://www.python.org/downloads/release/python-3615/[Download] | 2021-12-23
 | 3.5 | 3.5.10 |  Sept. 5, 2020 | link:https://www.python.org/downloads/release/python-3510/[Download] | 2020-09-13
 | 2.7 | 2.7.18 |  April 20, 2020 | link:https://www.python.org/downloads/release/python-2718/[Download] | 2020-01-01
@@ -33,6 +33,7 @@ updated at 2022/10/01
 * link:./Python3/Wave_Gen.md[【Python】Sin波を生成してCSVファイルに出力する]
 * link:./Python3/Numpy_CSV.md[【Python】CSVファイルのデータをNumpyのndarrayに読み込む]
 * link:./Python3/Wave_Plot.md[【Python】CSVファイルの波形をグラフ出力する]
+* link:./Python3/Numpy_Sinc.md[【Python】CSVファイルのデータにNumpyでSincフィルタをかける]
 
 == References
 
