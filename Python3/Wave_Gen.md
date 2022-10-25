@@ -124,7 +124,7 @@ def gen_wave(fyml):
     I1_0 = 0
     I2_0 = 0
     DA_0 = vrefl
-    d = np.zeros_like(w)
+    d = np.zeros_like(w).astype('int32')
     if dsm_order == 2:
       # 2次⊿Σ変調
       for i in range(sample_num):
@@ -152,6 +152,7 @@ def gen_wave(fyml):
     
     # ビットストリームのCSV出力（Pandas使用）
     df2 = pd.DataFrame(np.stack([x,d],1), columns=['Time', 'Bit-stream'])
+    df2['Bit-stream'] = df2['Bit-stream'].astype('int')
     if dsm_xaxis:
       df2.to_csv(dsm_file, header=dsm_header, index=False)
     else:
