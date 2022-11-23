@@ -27,3 +27,32 @@ cd work
 rpm2cpio ../gettext-0.19.8.1-3.el7.x86_64.rpm | cpio -ivd
 tree
 ```
+
+## jinja2
+
+### tenplate
+
+```Text
+// Jinja2 template
+  value1 = {{ param_A }}
+  value2 = {{ param_B }}
+{% if param_C == 0 %}
+  print("value3 is Zero.")
+{% else %}
+  print("value3 is Not Zero.")
+{% endif %}
+```
+## Template toolkit
+
+### tenplate
+
+```Text
+// Template toolkit template
+  value1 = [% param_A %]
+  value2 = [% param_B %]
+[% if param_C == 0 %]
+  print("value3 is Zero.")
+[% else %]
+  print("value3 is Not Zero.")
+[% end %]
+```
