@@ -2,6 +2,15 @@
 
 ## envsubst
 
+### tenplate
+
+```Text
+// envsubst template
+  value1 = ${param_A}
+  value2 = ${param_B}
+// if statement not available
+```
+
 ### ユーザーインストール
 
 #### コンパイルする場合
@@ -50,9 +59,30 @@ tree
 // Template toolkit template
   value1 = [% param_A %]
   value2 = [% param_B %]
-[% if param_C == 0 %]
+[% IF param_C == 0 %]
   print("value3 is Zero.")
-[% else %]
+[% ELSE %]
   print("value3 is Not Zero.")
-[% end %]
+[% END %]
+```
+
+## gcc
+
+### tenplate
+
+```Text
+// envsubst template
+  value1 = param_A
+  value2 = param_B
+#if param_C == 0
+  print("value3 is Zero.")
+#else
+  print("value3 is Not Zero.")
+#endif
+```
+
+### 実行
+
+```Shell
+cat text_template.tmpl | gcc -E -C -P -include parameter.h - | cat --squeeze-blank > text_generated.txt
 ```
