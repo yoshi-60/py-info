@@ -1,5 +1,5 @@
 # 【Python】Excelの書式を設定する
-updated at 2022/9/04
+updated at 2023/1/26
 
 ## 実行内容
 Excelファイルのセルの書式(フォント、フィル、枠線等)を設定する。
@@ -123,6 +123,25 @@ for row in ws[cell_range]:
 wb.save(wb_name)
 ```
  
+### 罫線のスタイル
+
+| スタイル名       |  線種           |
+| ---              |  ---            |
+| thin             |  実線（細）     |
+| medium           |  実線（中）     |
+| thick            |  実線（太）     |
+| double           | 二重線          |
+| hair             |  点線（細）     |
+| dotted           |  点線           |
+| dashed           |  破線           |
+| mediumDashed     |  破線（太）     |
+| dashDot          |  一点鎖線       |
+| mediumDashDot    |  一点鎖線（太） |
+| dashDotDot       |  二点鎖線       |
+| mediumDashDotDot |  二点鎖線（太） |
+| slantDashDot     | 斜め破線        |
+
+
 ## References
 
 * [utils.cell (openpyxl.readthedocs.io)](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.utils.cell.html)
