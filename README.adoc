@@ -3,16 +3,16 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2023/6/04
+updated at 2023/8/18
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
 
-| 3.11 | 3.11.3 |  Apr. 5, 2023 | link:https://www.python.org/downloads/release/python-3113/[Download] | 2027-10
-| 3.10 | 3.10.11 |  Apr. 5, 2023 | link:https://www.python.org/downloads/release/python-31011/[Download] | 2026-10
-| 3.9 | 3.9.16 |  Dec. 6, 2022 | link:https://www.python.org/downloads/release/python-3916/[Download] | 2025-10
-| 3.8 | 3.8.16 |  Dec. 6, 2022 | link:https://www.python.org/downloads/release/python-3816/[Download] | 2024-10
-| 3.7 | 3.7.16 |  Dec. 6, 2022 | link:https://www.python.org/downloads/release/python-3716/[Download] | 2023-06-27
+| 3.11 | 3.11.4 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3114/[Download] | 2027-10
+| 3.10 | 3.10.12 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-31012/[Download] | 2026-10
+| 3.9 | 3.9.17 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3917[Download] | 2025-10
+| 3.8 | 3.8.17 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3817/[Download] | 2024-10
+| 3.7 | 3.7.17 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3717/[Download] | 2023-06-27
 | 3.6 | 3.6.15 |  Sept. 4, 2021 | link:https://www.python.org/downloads/release/python-3615/[Download] | 2021-12-23
 | 3.5 | 3.5.10 |  Sept. 5, 2020 | link:https://www.python.org/downloads/release/python-3510/[Download] | 2020-09-13
 | 2.7 | 2.7.18 |  April 20, 2020 | link:https://www.python.org/downloads/release/python-2718/[Download] | 2020-01-01
