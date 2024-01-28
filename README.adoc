@@ -3,15 +3,17 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2023/8/18
+updated at 2024/1/28
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
 
-| 3.11 | 3.11.4 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3114/[Download] | 2027-10
-| 3.10 | 3.10.12 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-31012/[Download] | 2026-10
-| 3.9 | 3.9.17 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3917[Download] | 2025-10
-| 3.8 | 3.8.17 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3817/[Download] | 2024-10
+| 3.13 |  |  Oct. 1, 2024 | link:https://www.python.org/download/pre-releases/[prerelease] | 2029-10
+| 3.12 | 3.12.1 |  Dec. 8, 2023 | link:https://www.python.org/downloads/release/python-3121/[Download] | 2028-10
+| 3.11 | 3.11.7 |  Dec. 4, 2023 | link:https://www.python.org/downloads/release/python-3117/[Download] | 2027-10
+| 3.10 | 3.10.13 |  Aug. 24, 2023 | link:https://www.python.org/downloads/release/python-31013/[Download] | 2026-10
+| 3.9 | 3.9.18 |  Aug. 24, 2023 | link:https://www.python.org/downloads/release/python-3918[Download] | 2025-10
+| 3.8 | 3.8.18 |  Aug. 24, 2023 | link:https://www.python.org/downloads/release/python-3818/[Download] | 2024-10
 | 3.7 (End of life) | 3.7.17 |  June 6, 2023 | link:https://www.python.org/downloads/release/python-3717/[Download] | 2023-06-27
 | 3.6 (End of life) | 3.6.15 |  Sept. 4, 2021 | link:https://www.python.org/downloads/release/python-3615/[Download] | 2021-12-23
 | 3.5 (End of life) | 3.5.10 |  Sept. 5, 2020 | link:https://www.python.org/downloads/release/python-3510/[Download] | 2020-09-13
