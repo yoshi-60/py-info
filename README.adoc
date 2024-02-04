@@ -3,7 +3,7 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2024/1/28
+updated at 2024/2/04
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
@@ -38,6 +38,7 @@ updated at 2024/1/28
 * link:./Python3/Wave_Plot.md[【Python】CSVファイルの波形をグラフ出力する]
 * link:./Python3/Numpy_Sinc.md[【Python】CSVファイルのデータにNumpyでSincフィルタをかける]
 * link:./Python3/Text_template.md[【Python】テンプレートエンジンを使って、ファイル生成をする]
+* link:./Word/table_to_csv.md[【Python】Wordのテーブルの内容をCSVファイルに出力する]
 
 == References
 
