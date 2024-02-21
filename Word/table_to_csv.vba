@@ -17,7 +17,7 @@ Sub tbl2csv()
   Dim rowStr As String
   
   'フォルダパスを設定
-  myFDPath = "C:\Users\Ymorooka\Documents"
+  myFDPath = "C:\Users\Public\Documents"
   '出力ファイル名を設定
   myOutFile = "WordTblOut.txt"
 
