@@ -366,6 +366,7 @@ if __name__ == '__main__':
   pkey = '-p'
   bkey = '-b'
   wkey = '-w'
+  vkey = '-v'
   tkey = '-d'
   ukey = '-u'
   fkey = '-f'
