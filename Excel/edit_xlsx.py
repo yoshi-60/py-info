@@ -96,17 +96,17 @@ def edit_xlsx(fxlsx, fyml):
         elif edit_item == 'format' :
           edit_xlsx_format(ws,xy,edit_param)
         elif edit_item == 'alignment' :
-          edit_xIsx_alignment(ws,xy,edit_param)
+          edit_xlsx_alignment(ws,xy,edit_param)
         elif edit_item == 'merge_cells' :
-          edit_xIsx_merge(ws,xy,edit_param)
+          edit_xlsx_merge(ws,xy,edit_param)
         elif edit_item == 'auto_filter' :
           edit_xlsx_filter(ws,xy,edit_param)
         elif edit_item == 'group' :
-          edit_xIsx_group(ws,xy,edit_param)
+          edit_xlsx_group(ws,xy,edit_param)
         elif edit_item == 'row_dimensions' :
-          edit_xIsx_row(ws,xy,edit_param)
+          edit_xlsx_row(ws,xy,edit_param)
         elif edit_item == 'column_dimensions' :
-          edit_xIsx_column(ws,xy,edit_param)
+          edit_xlsx_column(ws,xy,edit_param)
         elif edit_item == 'freeze_panes' :
           edit_xlsx_pane(ws,xy,edit_param)
         elif edit_item == 'conditional_formatting' :
@@ -195,7 +195,7 @@ def edit_xlsx_border(ws,xy,edit_param):
   for b_key in b_param :
     if b_key in edit_param :
       for s_key in s_param[b_key] :
-        if s_key in edit_param[b_key] :
+        if (edit_param[b_key] is not None) and (s_key in edit_param[b_key]) :
           s_param[b_key][s_key] = edit_param[b_key][s_key]
       b_param[b_key] = Side(style=s_param[b_key]['style'], color=s_param[b_key] ['color'])
     for d_key in d_param :
