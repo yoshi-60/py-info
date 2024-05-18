@@ -71,7 +71,7 @@ def edit_xlsx(fxlsx, fyml):
     shname = sheets[i_sheet]
     print(f'Sheet_name: {shname}')
     # Sheet select / create
-    if shame in wb.sheetnames:
+    if shname in wb.sheetnames:
       ws = wb[shname]
     else:
       ws = wb.create_sheet(shname)
@@ -150,7 +150,7 @@ def edit_xlsx_font(ws,xy,edit_param):
 
   #print(set_param)
   f_obj = Font(name=set_param['name'], size=set_param['size'], color=set_param['color'], bold=set_param['bold'],
-    italic=set_param['italic'], vertAlign=set_param['vertAlign'], strike=set_param['strike'], underline=set_param['unserline'])
+    italic=set_param['italic'], vertAlign=set_param['vertAlign'], strike=set_param['strike'], underline=set_param['underline'])
 
   for row in ws.iter_rows(min_row=xy[1], max_row=xy[3], min_col=xy[0], max_col=xy[2], values_only=False):
     for cell in row:
@@ -419,7 +419,7 @@ def edit_xlsx_filter(ws,xy,edit_param):
     else:
       ws. auto_filter.ref = None
 
-def edit_xIsx_pane(ws,xy,edit_param):
+def edit_xlsx_pane(ws,xy,edit_param):
   #print('edit_xlsx_pane')
   icol_min, irow_min, icol_max, irow_max = xy
 
