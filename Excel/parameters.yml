@@ -94,9 +94,12 @@ sheets:
         protection:
           locked: True
           hidden: False
-        height: 12.0
-        width: 8.0
-        number_format: '#,##0'
+        row_dimensions:
+          height: 12.0
+        column_dimensions:
+          width: 8.0
+        format:
+          number_format: '#,##0'
         filter:
           column:
             id: 0
@@ -125,8 +128,10 @@ sheets:
   - name: Sheet2
     cells:
       - range: A1:A1
-        height: 24.0
-        width: 16.0
+        row_dimensions:
+          height: 24.0
+        column_dimensions:
+          width: 16.0
         font:
           name: "BIZ UDPGothic"
       - range: B2:E5
