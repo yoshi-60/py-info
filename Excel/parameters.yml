@@ -140,3 +140,8 @@ sheets:
           - [1,"row1",101,3.2E+06]
           - [2,"row2",-102,4.0E-03]
           - [3,"row3",103,-0.123E+12]
+      - range: C2:E2
+        comment:
+          - ["Comment Text1", "author"]
+          - ["Comment Text2", "author"]
+          - ["Comment Text3", "author", 200,80]
