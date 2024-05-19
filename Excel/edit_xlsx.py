@@ -13,6 +13,7 @@ from openpyxl.worksheet.properties import Outline
 from openpyxl.formatting import Rule
 from openpyxl.formatting.rule import FormulaRule
 from openpyxl.styles.differential import DifferentialStyle
+from openpyxl.comments import Comment
 
 def info_xlsx(fxlsx):
   # Excel book open
@@ -111,6 +112,8 @@ def edit_xlsx(fxlsx, fyml):
           edit_xlsx_pane(ws,xy,edit_param)
         elif edit_item == 'conditional_formatting' :
           edit_xlsx_conditional(ws,xy,edit_param)
+        elif edit_item == 'comment' :
+          edit_xlsx_comment(ws,xy,edit_param)
 
   wb.save(filename=fxlsx)
   wb.close()
@@ -486,6 +489,47 @@ def edit_xlsx_conditional(ws,xy,edit_param):
     else:
       rule = Rule(type=set_param['type'], formula=set_param['formula'], dxf=dxf, stopIfTrue=set_param['stopIfTrue'])
     ws.conditional_formatting.add(range_str, rule)
+
+def edit_xlsx_comment(ws,xy,edit_param):
+  #print('edit_xlsx_comment')
+  icol_min, irow_min, icol_max, irow_max = xy
+
+  if type(edit_param) is list:
+    if type(edit_param[0]) is list:
+      set_mode = 2
+      set_param = edit_param[0]
+    else:
+      set_mode = 1
+      set_param = edit_param
+    print(set_param)
+  else: 
+    print ('%%%%% comment parameter error %%%%%')
+    return 0
+  
+  i_val = 0
+  for row in ws.iter_rows(min_row=irow_min, max_row=irow_max, min_col=icol_min, max_col=icol_max, values_only=False):
+    for cell in row:
+      if len(set_param) < 4 :
+        set_height = -1
+      else:
+        set_height = set_param[3]
+      if len(set_param) < 3 :
+        set_width = -1
+      else:
+        set_width = set_param[2]
+      
+      c_obj = Comment(text=set_param[0], author=set_param[1])
+      if set_width > 0 :
+        c_obj.width = set_width
+      if set_height > 0 :
+        c_obj.height = set_height
+      cell.comment = c_obj
+      i_val = i_val + 1
+      
+      if set_mode == 2 and len(edit_param) > i_val :
+        set_param = edit_param[i_val]
+
+  return i_val
 
 if __name__ == '__main__':
   args = sys.argv
