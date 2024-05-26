@@ -145,3 +145,7 @@ sheets:
           - ["Comment Text1", "author"]
           - ["Comment Text2", "author"]
           - ["Comment Text3", "author", 200,80]
+      - range: B4:B5
+        hyperlink:
+          - "sample.xslx#Sheet1!B4"
+          - "sample.xslx#Sheet1!B5"
