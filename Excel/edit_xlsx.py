@@ -114,6 +114,8 @@ def edit_xlsx(fxlsx, fyml):
           edit_xlsx_conditional(ws,xy,edit_param)
         elif edit_item == 'comment' :
           edit_xlsx_comment(ws,xy,edit_param)
+        elif edit_item == 'hyperlink' :
+          edit_xlsx_link(ws,xy,edit_param)
 
   wb.save(filename=fxlsx)
   wb.close()
@@ -528,6 +530,29 @@ def edit_xlsx_comment(ws,xy,edit_param):
       
       if set_mode == 2 and len(edit_param) > i_val :
         set_param = edit_param[i_val]
+
+  return i_val
+
+def edit_xlsx_link(ws,xy,edit_param):
+  #print('edit_xlsx_link')
+  icol_min, irow_min, icol_max, irow_max = xy
+
+  if type(edit_param[0]) is list:
+    links = list( itertools.chain.from_iterable(edit_param) )
+  else:
+    links = edit_param
+  num_param = len(links)
+  icol_min, irow_min, icol_max, irow_max = xy
+  num_cell = (irow_max - irow_min + 1) * (icol_max - icol_min + 1)
+  if num_param != num_cell :
+    print ('%%%% link parameter error %%%%%')
+    return 0
+
+  i_val = 0
+  for row in ws.iter_rows(min_row=irow_min, max_row=irow_max, min_col=icol_min, max_col=icol_max, values_only=False):
+    for cell in row:
+      cell.hyperlink = links[i_val]
+      i_val = i_val + 1
 
   return i_val
 
