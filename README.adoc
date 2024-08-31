@@ -3,13 +3,13 @@
 Memorandum for myself
 
 == Python latest version
-updated at 2024/5/12
+updated at 2024/8/31
 
 |===
 |Python version|Release version|Release Date|Download|End of Support
 
 | 3.13 |  |  Oct. 1, 2024 | link:https://www.python.org/download/pre-releases/[prerelease] | 2029-10
-| 3.12 | 3.12.3 |  Apr. 9, 2024 | link:https://www.python.org/downloads/release/python-3123/[Download] | 2028-10
+| 3.12 | 3.12.5 |  Aug. 6, 2024 | link:https://www.python.org/downloads/release/python-3125/[Download] | 2028-10
 | 3.11 | 3.11.9 |  Apr. 2, 2024 | link:https://www.python.org/downloads/release/python-3119/[Download] | 2027-10
 | 3.10 | 3.10.14 |  Mar. 19, 2024 | link:https://www.python.org/downloads/release/python-31014/[Download] | 2026-10
 | 3.9 | 3.9.19 |  Mar. 19, 2024 | link:https://www.python.org/downloads/release/python-3919[Download] | 2025-10
@@ -37,7 +37,7 @@ updated at 2024/5/12
 * link:./Python3/Numpy_CSV.md[【Python】CSVファイルのデータをNumpyのndarrayに読み込む]
 * link:./Python3/Wave_Plot.md[【Python】CSVファイルの波形をグラフ出力する]
 * link:./Python3/Numpy_Sinc.md[【Python】CSVファイルのデータにNumpyでSincフィルタをかける]
-* link:./Python3/Text_template.md[【Python】テンプレートエンジンを使って、ファイル生成をする]
+* link:./Python3/Render_file.md[【Python】テンプレートエンジンを使って、ファイル生成をする]
 * link:./Word/table_to_csv.md[【Python】Wordのテーブルの内容をCSVファイルに出力する]
 
 == References
