@@ -81,9 +81,9 @@ if __name__ == '__main__':
         else:
           render_file(args[1], args[2], args[3])
       else:
-        print(f'Temlate {args[2]} Not Found!')
+        print(f'Template {args[2]} Not Found!')
     else:
-      print(f'File {args[1]} Not Found!')
+      print(f'Parameter {args[1]} Not Found!')
   else:
     print(f'Usage:')
     print(f'  {pathlib.Path(args[0]).name} parameter_yaml template_file output_file')
