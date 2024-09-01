@@ -4,6 +4,7 @@ import sys
 import os
 import pathlib
 import yaml
+import itertools
 from openpyxl import load_workbook
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -14,6 +15,7 @@ from openpyxl.formatting import Rule
 from openpyxl.formatting.rule import FormulaRule
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.comments import Comment
+from openpyxl.drawing import image
 
 def info_xlsx(fxlsx):
   # Excel book open
@@ -116,12 +118,13 @@ def edit_xlsx(fxlsx, fyml):
           edit_xlsx_comment(ws,xy,edit_param)
         elif edit_item == 'hyperlink' :
           edit_xlsx_link(ws,xy,edit_param)
+        elif edit_item == 'image' :
+          edit_xlsx_image(ws,xy,edit_param)
 
   wb.save(filename=fxlsx)
   wb.close()
 
 def edit_xlsx_value(ws,xy,edit_param):
-  import itertools
   #print('edit_xlsx_value')
   #print(edit_param)
   if type(edit_param[0]) is list:
@@ -555,6 +558,27 @@ def edit_xlsx_link(ws,xy,edit_param):
       i_val = i_val + 1
 
   return i_val
+
+def edit_xlsx_image(ws,xy,edit_param):
+  #print('edit_xlsx_image')
+  #print(edit_param)
+  icol_min, irow_min, icol_max, irow_max = xy
+  if type(edit_param[0]) is list:
+    images = list( itertools.chain.from_iterable(edit_param) )
+  else:
+    images = edit_param
+  num_param = len(images)
+  num_cell = (irow_max - irow_min + 1) * (icol_max - icol_min + 1)
+  if num_param != num_cell :
+    print ('%%%% value parameter error %%%%%')
+    return 0
+
+  i_val = 0
+  for row in ws.iter_rows(min_row=irow_min, max_row=irow_max, min_col=icol_min, max_col=icol_max, values_only=False):
+    for cell in row:
+      imgObj = image.Image(images[i_val])
+      ws.add_image(imgObj,cell.coordinate)
+      i_val = i_val + 1
 
 if __name__ == '__main__':
   args = sys.argv
