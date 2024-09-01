@@ -2,7 +2,7 @@
 import sys
 import os
 import pathlib
-import yaml
+import csv
 from openpyxl import load_workbook
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -31,8 +31,11 @@ def xlsx_to_csv(fxlsx, fcsv, shname, crng):
   # 対象シートの設定
   if not shname:
     csv_shname = xlsx_shname
-  else:
+  elif shname in wb.sheetnames:
     csv_shname = shname
+  else:
+    print(f'SheetNameError: {shname} NOT found')
+    return 0
   csv_ws = wb[csv_shname]
   print(f'Convert SheetName: {csv_shname}')
   
@@ -46,34 +49,42 @@ def xlsx_to_csv(fxlsx, fcsv, shname, crng):
   csv_xy = [1, 1, 1, 1]
   if not crng:
     csv_xy = [xlsx_min_c, xlsx_min_r, xlsx_max_c, xlsx_max_r]
-  else not (':' in s):
+  elif not (':' in crng):
     tuple_xy = list(coordinate_to_tuple(crng))
     csv_xy = [tuple_xy[0], tuple_xy[1], xlsx_max_c, xlsx_max_r]
-  else
+  else:
     crng_split = crng.split(':')
     if not crng_split[0]:
       csv_xy[0] = xlsx_min_c
       csv_xy[1] = xlsx_min_r
-    else
+    else:
       tuple_xy  = list(coordinate_to_tuple(crng_split[0]))
       csv_xy[0] = tuple_xy[0]
       csv_xy[1] = tuple_xy[1]
     if not crng_split[1]:
       csv_xy[2] = xlsx_max_c
       csv_xy[3] = xlsx_max_r
-    else
+    else:
       tuple_xy  = list(coordinate_to_tuple(crng_split[1]))
       csv_xy[2] = tuple_xy[0]
       csv_xy[3] = tuple_xy[1]
-  print(f'Convert CellRange: Row,Col({csv_xy[1]} , {csv_xy[0]}) - ({csv_xy[3]} , {csv_xy[2]})')
+      
+  if (csv_xy[0] > csv_xy[2]) or (csv_xy[1] > csv_xy[3]):
+    print(f'CellRange Error: Row,Col({csv_xy[1]} , {csv_xy[0]}) - ({csv_xy[3]} , {csv_xy[2]})')
+    return 0
+  else:
+    print(f'Convert CellRange: Row,Col({csv_xy[1]} , {csv_xy[0]}) - ({csv_xy[3]} , {csv_xy[2]})')
 
   # CSVファイルのオープン
-  with open(fcsv, 'w', newline='') as fw
+  with open(fcsv, 'w', newline='') as fw:
     writer = csv.writer(fw)
     
     # セル値の取得とCSVへの書き込み
-    for row in ws1.iter_rows(min_row=csv_xy[1],min_col=csv_xy[0],max_row=csv_xy[3],max_col=csv_xy[2],values_only=True):
-      writer.writerow([cell.value for cell in row])
+    row_cnt = 0
+    for row in csv_ws.iter_rows(min_row=csv_xy[1],min_col=csv_xy[0],max_row=csv_xy[3],max_col=csv_xy[2],values_only=True):
+      writer.writerow([cell for cell in row])
+      row_cnt = row_cnt+1
+  print(f'Output_CSV: {fcsv} , Record_Count: {row_cnt}')
 
 
 if __name__ == '__main__':
@@ -85,22 +96,22 @@ if __name__ == '__main__':
   
   arg_num = 3
   arg_num = (arg_num + 2) if skey in args else arg_num
-  arg_num = (arg_num + 2) if skey in args else arg_num
+  arg_num = (arg_num + 2) if ckey in args else arg_num
   
   if arg_num <= len(args):
     if skey in args:
       aidx = args.index(skey)
       sval = args[aidx+1]
-      del args.index[aidx:aidx+2]
+      del args[aidx:aidx+2]
     if ckey in args:
       aidx = args.index(ckey)
       cval = args[aidx+1]
-      del args.index[aidx:aidx+2]
+      del args[aidx:aidx+2]
     if os.path.isfile(args[1]):
-      if os.path.isdir(args[2]):
-        xlsx_to_csv(args[1], args[2], sval, cval)
-      else:
+      if os.path.isfile(args[2]):
         print(f'File {args[2]} already Exist!')
+      else:
+        xlsx_to_csv(args[1], args[2], sval, cval)
     else:
       print(f'File {args[1]} Not Found!')
   else:
