@@ -53,7 +53,7 @@ def print_usage(arg0):
   print('       -b : add border')
   print('       -f : font_name font_size font_color')
   print('       -j : header_text')
-  print('       -w : column width adjust')
+  print('       -w n m : column width, -1=not set, 0=adjust')
   print('       -g : group row')
   print('       -s sheet_name : default = text filename without extention')
   print('       -c cell_addr. : start address , default = A1')
@@ -88,6 +88,19 @@ def line_calc(llist,lnum):
   #print(f'Input: {llist[0]} , {llist[1]} , {lnum} , Output; {lstart} , {lend}')
   return lstart,lend
 
+def str_to_num(vstr):
+  try:
+    ival = int(vstr, 10)
+  except ValueError:
+    try:
+      fval = float(vstr)
+    except ValueError:
+      return vstr
+    else:
+      return fval
+  else:
+      return ival
+
 def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist,htxt,flist):
   print(ftxt,fxlsx,shname)
   print(sys.getfilesystemencoding())
@@ -98,7 +111,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist,htxt,fli
   #   shname シート名を設定する
   #   cadr 書き込み位置を指定する（A1形式）
   #   bval = 1 で罫線設定
-  #   wval = 1 でセル幅自動設定
+  #   wval = 0 でセル幅自動設定、正値はその値をセル幅に設定
   #   gval = 1 グループ化
   #   htxt = ヘッダテキスト（指定無しの時ファイル名を使う）
   #   flist= フォント名,サイズ,色
@@ -107,6 +120,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist,htxt,fli
   rnum = 0
   clen_max = [0,0]
   col_max = 0
+  width_num = [str_to_num(w) for w in wval]
   # テキストファイル読み込み
   with open(ftxt, 'r', encoding='utf-8') as f: 
     read_txt = f.readlines()
@@ -203,12 +217,22 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist,htxt,fli
   print(f'Data   Row: {irow_d} , {irow_max} Col: {icol_d} , {icol_max}')
    
   # セル幅設定
-  if wval == 1:
+  if (icol_h > 0) and (width_num[0] == 0) :
+      col_str = ws.cell(row=irow,column=icol_h).column_letter
+      clen_val = 1.1 * min(column_str_max,len(header_txt))
+      ws.column_dimensions[col_str].width = clen_val
+  elif (icol_h > 0) and (width_num[0] > 0.0) :
+      col_str = ws.cell(row=irow,column=icol_h).column_letter
+      ws.column_dimensions[col_str].width = width_num[0]
+  if width_num[1] == 0:
     for c in range(icol_d,icol_max + 1):
       col_str = ws.cell(row=irow,column=c).column_letter
       clen_val = 1.1 * min(column_str_max,max(4,clen_max[(c - icol_d)]))
       ws.column_dimensions[col_str].width = clen_val
       #print(c,clen_val)
+  elif width_num[1] > 0.0 :
+    col_str = ws.cell(row=irow,column=icol_max).column_letter
+    ws.column_dimensions[col_str].width = width_num[1]
   # グループ（アウトライン）設定
   row_st  = irow_d
   row_end = irow_max
@@ -243,7 +267,7 @@ if __name__ == '__main__':
   cval = 'A1'
   nval = 0
   bval = 0
-  wval = 0
+  wval = ['-1','-1']
   gval = 0
   jval = ''
   fval = []
@@ -255,7 +279,7 @@ if __name__ == '__main__':
   arg_num = (arg_num + 2) if ckey in args else arg_num
   arg_num = (arg_num + 1) if nkey in args else arg_num
   arg_num = (arg_num + 1) if bkey in args else arg_num
-  arg_num = (arg_num + 1) if wkey in args else arg_num
+  arg_num = (arg_num + 3) if wkey in args else arg_num
   arg_num = (arg_num + 1) if gkey in args else arg_num
   arg_num = (arg_num + 2) if jkey in args else arg_num
   arg_num = (arg_num + 4) if fkey in args else arg_num
@@ -286,8 +310,9 @@ if __name__ == '__main__':
       del args[aidx]
     if wkey in args:
       aidx = args.index(wkey)
-      wval = 1
-      del args[aidx]
+      wval[0] = args[aidx+1]
+      wval[1] = args[aidx+2]
+      del args[aidx:aidx+3]
     if gkey in args:
       aidx = args.index(gkey)
       gval = 1
