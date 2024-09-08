@@ -1,5 +1,5 @@
 # 【Python】CSVファイルをExcelにインポートする
-updated at 2024/5/12
+updated at 2024/9/08
 
 ## 実行内容
 CSVファイルを Excel(xlsx)のシートに読み込む。
@@ -17,7 +17,8 @@ CSVファイルを Excel(xlsx)のシートに読み込む。
 11. Excelのシートへの開始セル位置を指定できるようにする（-c オプション）
 12. Excelのシートへの挿入部分に罫線を付加できるようにする。（-b オプション）
 13. Excelのシートへの挿入部分のセルの列幅を自動設定できるようにする。（-w オプション）
-14. TSVファイルの読み込みにも対応する。（-t オプション）
+14. Excelのシートへのヘッダ作成の有り無しを設定できるようにする。（-e オプション）
+15. TSVファイルの読み込みにも対応する。（-t オプション）
 
 ### 実行方法
 
@@ -75,9 +76,10 @@ from openpyxl.styles import Font, PatternFill, Border, Side
 def print_usage(arg0):
   print(f'Usage:')
   print(f'  {arg0} input_csv output_xlsx [-s sheet_name] [-c cell_address] [-h line_num] [-f font size] [-u rgb] [-t] [-n] [-b] [-v] [-w] [col1 col2 col3]')
-  print('       -s sheet_name : default = csv filename without extension')
-  print('       -c cell_addr. : start address , default = A1')
-  print('       -h line_num   : csv header line number ( 0 = no header in csv file)')
+  print('       -s sheet_name  : default = csv filename without extension')
+  print('       -c cell_addr.  : start address , default = A1')
+  print('       -h line_num    : csv header line number  ( 0 = no header in csv  file)')
+  print('       -e number(0/1) : xlsx header type number ( 0 = no header in xlsx file)')
   print('       -t : input TSV (tab separate)')
   print('       -n : add line number')
   print('       -b : add border')
@@ -155,7 +157,7 @@ def str_to_date(vstr):
             except ValueError:
               t24 = re.match(r"(\d+):(\d+):(\d+)", tstr)
               if t24:
-                t24str = f{(int(t24[1]) % 24):02}:{t24[2]}:{t24[3]}'
+                t24str = f'{(int(t24[1]) % 24):02}:{t24[2]}:{t24[3]}'
                 try:
                   tval = datetime.strptime(t24str, '%H:%M:%S')
                 except ValueError:
@@ -195,7 +197,7 @@ def str_to_data(dtyp, vstr):
   else:
     return vstr
 
-def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,hval,hlist,tstr,rgbcode,flist):
+def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,xlhd,hval,hlist,tstr,rgbcode,flist):
   print(f'Input_CSV: {fcsv} , Output_xlsx: {fxlsx} , Sheet_name: {shname}')
   print(f'Encoding: {sys.getfilesystemencoding()}')
   # csvデータを2次元配列 rowsに読み込む
@@ -214,6 +216,7 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,hval,hlist,tstr,
   #   nval = 1 add line number
   #   hval = n start nth line
   #   hval = 0 no header in csv file
+  #   xlhd = 0 no header in xlsx file
   #   dval   delimiter
   #   shname sheet name
   #   cadr  Excel start cell (A1)
@@ -281,7 +284,10 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,hval,hlist,tstr,
     for col in range(cnum, cnum_max):
       header_list.append( "col_" + str(col+1-cnum_add) )
 
-  print(f'Header: {header_list}')
+  if xlhd > 0 :
+    print(f'Header: {header_list}')
+  else:
+    print(f'Header: No_Header_in_Excel')
   print(f'Column width: {clen_max}')
 
   # Excelのブックを開く
@@ -341,12 +347,15 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,hval,hlist,tstr,
   icol = ws[cadr].column
   r = irow
   c = icol
-  for val in header_list:
-    ws.cell(row=r,column=c).value=val
-    ws.cell(row=r,column=c).font=header_f
-    ws.cell(row=r,column=c).fill=header_p
-    ws.cell(row=r,column=c).border=header_b
-    c = c + 1
+  if xlhd > 0 :
+    for val in header_list:
+      ws.cell(row=r,column=c).value=val
+      ws.cell(row=r,column=c).font=header_f
+      ws.cell(row=r,column=c).fill=header_p
+      ws.cell(row=r,column=c).border=header_b
+      c = c + 1
+  else:
+    r = r - 1
   for row in rows:
     r = r + 1
     c = icol
@@ -372,7 +381,8 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,hval,hlist,tstr,
   # Filter
   col_max_letter = get_column_letter(icol_max)
   range_str = cadr + ":" + col_max_letter + str(irow_max)
-  ws.auto_filter.ref = range_str
+  if xlhd > 0 :
+    ws.auto_filter.ref = range_str
   print(f'Sheet: {shname} , Range: {range_str}')
   
   wb.save(filename=fxlsx)
@@ -383,6 +393,7 @@ def csv_to_xlsx(fcsv,fxlsx,shname,cadr,pval,dval,nval,bval,wval,hval,hlist,tstr,
 if __name__ == '__main__':
   args = sys.argv
   hkey = '-h'
+  ekey = '-e'
   dkey = '-t'
   skey = '-s'
   ckey = '-c'
@@ -395,6 +406,7 @@ if __name__ == '__main__':
   ukey = '-u'
   fkey = '-f'
   hval = 1
+  eval = 1
   dval = ','
   shname = 'Sheet1'
   cval = 'A1'
@@ -410,6 +422,7 @@ if __name__ == '__main__':
   
   arg_num = 3
   arg_num = (arg_num + 2) if hkey in args else arg_num
+  arg_num = (arg_num + 2) if ekey in args else arg_num
   arg_num = (arg_num + 1) if dkey in args else arg_num
   arg_num = (arg_num + 2) if skey in args else arg_num
   arg_num = (arg_num + 2) if ckey in args else arg_num
@@ -425,6 +438,10 @@ if __name__ == '__main__':
     if hkey in args:
       aidx = args.index(hkey)
       hval = int(args[aidx+1])
+      del args[aidx:aidx+2]
+    if ekey in args:
+      aidx = args.index(ekey)
+      eval = int(args[aidx+1])
       del args[aidx:aidx+2]
     if dkey in args:
       aidx = args.index(dkey)
@@ -484,7 +501,7 @@ if __name__ == '__main__':
       if 4 <= len(args):
         for i in range( 3, len(args) ):
           hlist.append(args[i])
-      csv_to_xlsx(args[1], args[2], shname, cval, pval, dval, nval, bval, wval, hval, hlist, tval, uval, fval)
+      csv_to_xlsx(args[1], args[2], shname, cval, pval, dval, nval, bval, wval, eval, hval, hlist, tval, uval, fval)
     else:
       print(f'File {args[1]} Not Found!')
   else:
