@@ -1,5 +1,5 @@
 # 【Python】テキストファイルをExcelにインポートする
-updated at 2022/8/30
+updated at 2024/9/08
 
 ## 実行内容
 テキストファイルを Excel(xlsx)のシートに読み込む。
