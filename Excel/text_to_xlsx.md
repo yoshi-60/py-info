@@ -8,15 +8,17 @@ updated at 2022/8/30
 2. テキストファイル名をExcelの先頭行に設定する。
 3. テキストファイル名を入力しないこともできるようにする。（-h オプション）
 4. テキストファイル名の入力セルとデータ入力開始位置を変更できるようにする。（-h オプション）
-5. テキストファイルの読み込み開始行と終了行を指定できるようにする。（-l オプション）
-6. テキストファイルのデータの行番号をExcelデータに追加できるようにする（-n オプション）。
-7. Excelファイルおよびシートが存在しない場合は新規作成、存在する場合は追記する。
-8. Excelファイルのシート名はテキストファイルのファイル名(拡張子を除く)とする。
-9. Excelファイルのシート名を指定できるようにする。（-s オプション）
-10. Excelのシートへの開始セル位置を指定できるようにする（-c オプション）
-11. Excelのシートへの挿入部分に罫線を付加できるようにする。（-b オプション）
-12. Excelのシートへの挿入部分のセルの列幅を自動設定できるようにする。（-w オプション）
-13. Excelのシートへのテキストデータの挿入行をグループ化し、折りたためるようにする。（-g オプション）
+5. テキストファイル名を別の文字列にすることもできるようにする。（-j オプション）
+6. テキストファイルの読み込み開始行と終了行を指定できるようにする。（-l オプション）
+7. テキストファイルのデータの行番号をExcelデータに追加できるようにする（-n オプション）。
+8. Excelファイルおよびシートが存在しない場合は新規作成、存在する場合は追記する。
+9. Excelファイルのシート名はテキストファイルのファイル名(拡張子を除く)とする。
+10. Excelファイルのシート名を指定できるようにする。（-s オプション）
+11. Excelのシートへの開始セル位置を指定できるようにする（-c オプション）
+12. Excelのシートへのテキストデータのフォント,サイズ,色を指定できるようにする（-f オプション）
+13. Excelのシートへの挿入部分に罫線を付加できるようにする。（-b オプション）
+14. Excelのシートへの挿入部分のセルの列幅を設定できるようにする。（-w オプション）
+15. Excelのシートへのテキストデータの挿入行をグループ化し、折りたためるようにする。（-g オプション）
 
 ### 実行例
 
@@ -49,6 +51,8 @@ def print_usage(arg0):
   print('       -h n m : header(file name) line offset (default = 1 1, No header = 0 0)')
   print('       -n : add line number')
   print('       -b : add border')
+  print('       -f : font_name font_size font_color')
+  print('       -j : header_text')
   print('       -w : column width adjust')
   print('       -g : group row')
   print('       -s sheet_name : default = text filename without extention')
@@ -84,7 +88,7 @@ def line_calc(llist,lnum):
   #print(f'Input: {llist[0]} , {llist[1]} , {lnum} , Output; {lstart} , {lend}')
   return lstart,lend
 
-def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist):
+def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist,htxt,flist):
   print(ftxt,fxlsx,shname)
   print(sys.getfilesystemencoding())
   # テキストデータを2次元配列 rowsに読み込む
@@ -96,6 +100,8 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist):
   #   bval = 1 で罫線設定
   #   wval = 1 でセル幅自動設定
   #   gval = 1 グループ化
+  #   htxt = ヘッダテキスト（指定無しの時ファイル名を使う）
+  #   flist= フォント名,サイズ,色
   column_str_max = 96
   rows = []
   rnum = 0
@@ -123,6 +129,10 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist):
   # ヘッダ作成
   txt_file = pathlib.Path(ftxt)
   file_name = txt_file.name
+  if len(htxt) > 0 :
+    header_txt = htxt
+  else:
+    header_txt = file_name
   print(f'File name: {file_name}')
   print(f'Column width: {clen_max}')
 
@@ -143,8 +153,16 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist):
   # Font(name='Yu Gothic', size=11, bold=False, italic=False, underline='none', strike=False,
   #      vertAlign=None, color='FF000000')
   ws.sheet_properties.outlinePr = Outline(applyStyles=None, summaryBelow=False, summaryRight=False, showOutlineSymbols=None)
-  header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='ff0000ff')
-  val_f    = Font(name='BIZ UDGothic', size=10, bold=False, color='ff000000')
+  if len(flist) < 1 :
+    header_f = Font(name='BIZ UDPGothic', size=10, bold=True,  color='ff0000ff')
+    val_f    = Font(name='BIZ UDGothic',  size=10, bold=False, color='ff000000')
+  elif len(flist) > 1 :
+    header_f = Font(name=flist[0][0], size=flist[0][1], bold=True,  color=flist[0][2])
+    val_f    = Font(name=flist[1][0], size=flist[1][1], bold=False, color=flist[1][2])
+  else :
+    header_f = Font(name=flist[0][0], size=flist[0][1], bold=True,  color=flist[0][2])
+    val_f    = Font(name=flist[0][0], size=flist[0][1], bold=False, color=flist[0][2])
+
   side_1   = Side(border_style='thin', color='000000')
   if bval == 1:
     val_b    = Border(left=side_1, right=side_1, top=side_1, bottom=side_1)
@@ -157,7 +175,7 @@ def text_to_xlsx(ftxt,fxlsx,shname,cadr,nval,bval,wval,gval,hlist,llist):
   c = icol
   # ヘッダ(ファイル名)
   if hlist[0] > 0:
-    ws.cell(row=r,column=c).value=file_name
+    ws.cell(row=r,column=c).value=header_txt
     ws.cell(row=r,column=c).font=header_f
     irow_h = irow
     icol_h = icol
@@ -217,6 +235,8 @@ if __name__ == '__main__':
   bkey = '-b'
   wkey = '-w'
   gkey = '-g'
+  jkey = '-j'
+  fkey = '-f'
   hval = [1,1]
   lval = [0,0]
   shname = 'Sheet1'
@@ -225,7 +245,9 @@ if __name__ == '__main__':
   bval = 0
   wval = 0
   gval = 0
-  
+  jval = ''
+  fval = []
+
   arg_num = 3
   arg_num = (arg_num + 3) if hkey in args else arg_num
   arg_num = (arg_num + 3) if lkey in args else arg_num
@@ -235,6 +257,8 @@ if __name__ == '__main__':
   arg_num = (arg_num + 1) if bkey in args else arg_num
   arg_num = (arg_num + 1) if wkey in args else arg_num
   arg_num = (arg_num + 1) if gkey in args else arg_num
+  arg_num = (arg_num + 2) if jkey in args else arg_num
+  arg_num = (arg_num + 4) if fkey in args else arg_num
   if arg_num <= len(args):
     if lkey in args:
       aidx = args.index(lkey)
@@ -268,12 +292,25 @@ if __name__ == '__main__':
       aidx = args.index(gkey)
       gval = 1
       del args[aidx]
+    if jkey in args:
+      aidx = args.index(jkey)
+      jval = args[aidx+1]
+      del args[aidx:aidx+2]
+    for i in range(2):
+      if fkey in args:
+        aidx = args.index(fkey)
+        fval0 = []
+        fval0.append(args[aidx+1])
+        fval0.append(float(args[aidx+2]))
+        fval0.append(args[aidx+3])
+        fval.append(fval0)
+        del args[aidx:aidx+4]
     if os.path.isfile(args[1]):
       # シート名をテキストファイル名から取得(-s 指定が無かった時)
       if shname == 'Sheet1' :
         txt_file = pathlib.Path(args[1])
         shname = txt_file.stem
-      text_to_xlsx(args[1], args[2], shname, cval, nval, bval, wval, gval, hval, lval)
+      text_to_xlsx(args[1], args[2], shname, cval, nval, bval, wval, gval, hval, lval, jval, fval)
     else:
       print(f'File {args[1]} Not Found!')
   else:
