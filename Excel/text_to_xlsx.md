@@ -27,7 +27,7 @@ updated at 2024/9/08
 python3 text_to_xlsx.py  input.txt  output.xlsx
 
 # オプション設定有り
-python3 text_to_xlsx.py  input.txt  output_xlsx -h 1 0 -l 10 -20 -n -b -w -g -s sheet_name -c B3
+python3 text_to_xlsx.py  input.txt  output_xlsx -h 1 0 -l 10 -20 -n -b -w -1 18.2 -g -s sheet_name -c B3
 ```
 
 ## Pythonのコード
